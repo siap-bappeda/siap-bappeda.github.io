@@ -50,7 +50,7 @@
 
         /* Ticker Animation */
         .ticker-wrap { width: 100%; overflow: hidden; background-color: #1e3a8a; color: white; box-sizing: content-box; }
-        .ticker { display: inline-block; white-space: nowrap; padding-right: 100%; box-sizing: content-box; animation: ticker 30s linear infinite; }
+        .ticker { display: inline-block; white-space: nowrap; padding-right: 100%; box-sizing: content-box; animation: ticker 60s linear infinite; }
         @keyframes ticker {
             0% { transform: translate3d(100%, 0, 0); }
             100% { transform: translate3d(-100%, 0, 0); }
@@ -77,10 +77,8 @@
             <i class="fas fa-bolt mr-2 text-yellow-300"></i> Info Penting
         </div>
         <div class="overflow-hidden flex-1 relative h-6">
-            <div class="absolute whitespace-nowrap ticker">
-                <span class="mx-4">• Musrenbang RKPD Tingkat Kabupaten akan dilaksanakan pada 15 Maret 2026 Pukul 09.00 WIB di Aula Bappeda</span>
-                <span class="mx-4">• <span class="text-yellow-300">PENTING:</span> Batas akhir pengumpulan laporan Renja masing-masing bidang adalah hari Jumat minggu ini</span>
-                <span class="mx-4">• Rapat Paripurna DPRD terkait LKPJ Bupati diselenggarakan di Gedung DPRD Kab. Bengkulu Tengah</span>
+            <div class="absolute whitespace-nowrap ticker" id="dynamic-ticker">
+                <span class="mx-4">• Memuat informasi agenda terbaru...</span>
             </div>
         </div>
     </div>
@@ -627,6 +625,7 @@
         let dbUsers = [];
         let currentUser = null;
         let reminderInterval = null;
+        let publicSyncInterval = null;
 
         // ==========================================
         // SIMULASI DATABASE GOOGLE SHEETS (FALLBACK)
@@ -721,6 +720,7 @@
             if(showLoading) Swal.close();
             
             renderPublicAgendas();
+            updateTicker();
             if(currentUser) {
                 renderAdminAgendas();
                 renderUsersTable();
@@ -728,6 +728,27 @@
             }
         }
 
+        function updateTicker() {
+            const tickerContainer = document.getElementById('dynamic-ticker');
+            if(!tickerContainer) return;
+            
+            const now = new Date();
+            // Ambil 5 agenda mendesak yang belum lewat dan belum selesai/batal
+            const upcoming = dbAgendas.filter(a => new Date(`${a.date}T${a.time}`) >= now && a.status !== 'Ditunda' && a.status !== 'Selesai')
+                                      .sort((a,b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`))
+                                      .slice(0, 5);
+
+            if (upcoming.length === 0) {
+                tickerContainer.innerHTML = `<span class="mx-4">• Tidak ada agenda kegiatan mendesak dalam waktu dekat.</span>`;
+                return;
+            }
+
+            let tickerHTML = '';
+            upcoming.forEach(ag => {
+                tickerHTML += `<span class="mx-4">• <span class="text-yellow-300">INFO AGENDA:</span> ${ag.title} akan dilaksanakan pada ${formatDate(ag.date)} Pukul ${ag.time} WIB bertempat di ${ag.location}</span>`;
+            });
+            tickerContainer.innerHTML = tickerHTML;
+        }
 
         // ==========================================
         // LOGIKA AUTENTIKASI (LOGIN / LOGOUT)
@@ -938,10 +959,10 @@
             if(!ag || !ag.pic_phone) return Swal.fire('Error', 'Nomor WA tidak tersedia', 'error');
 
             Swal.fire({ title: 'Mengirim Pesan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
-            const msg = `*INFO AGENDA PIMPINAN*\n\nHalo *${ag.pic_name}*,\nIni adalah tes pesan dari Sistem SIAP BAPPEDA untuk agenda:\n*"${ag.title}"*\n\nTerima kasih.`;
+            const msg = `*INFORMASI AGENDA BAPPEDA*\n\nHalo *${ag.pic_name}*,\nBerikut adalah detail kegiatan yang ditugaskan kepada Anda:\n\n📌 *Agenda*: ${ag.title}\n📅 *Tgl*: ${formatDate(ag.date)}\n⏰ *Waktu*: ${ag.time} WIB\n📍 *Lokasi*: ${ag.location}\n🏢 *Bidang*: ${ag.bidang}\n\nMohon dipersiapkan dengan baik. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
             
-            if(await sendWhatsApp(ag.pic_phone, msg, "Tes Manual")) {
-                Swal.fire('Berhasil!', `Pesan uji coba terkirim ke ${ag.pic_phone}`, 'success');
+            if(await sendWhatsApp(ag.pic_phone, msg, "Kirim Manual")) {
+                Swal.fire('Berhasil!', `Informasi agenda terkirim ke ${ag.pic_phone}`, 'success');
             } else {
                 Swal.fire('Gagal!', 'Terjadi kesalahan jaringan atau API Key WA tidak valid.', 'error');
             }
@@ -962,11 +983,19 @@
             if (viewId === 'public-view') {
                 stopReminderBot();
                 fetchDataFromServer(false); // background fetch for public view
+                if (!publicSyncInterval) {
+                    // Auto-sync setiap 30 detik untuk halaman publik
+                    publicSyncInterval = setInterval(() => {
+                        fetchDataFromServer(false);
+                    }, 30000); 
+                }
             } else if (viewId === 'app-view') {
+                if(publicSyncInterval) { clearInterval(publicSyncInterval); publicSyncInterval = null; }
                 fetchDataFromServer(true);
                 startReminderBot();
             } else if (viewId === 'login-view') {
                 stopReminderBot();
+                if(publicSyncInterval) { clearInterval(publicSyncInterval); publicSyncInterval = null; }
             }
         }
 
@@ -1106,7 +1135,7 @@
                             <span class="${s.bg} ${s.text} text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full border border-white shadow-sm whitespace-nowrap">${ag.status}</span>
                         </td>
                         <td class="p-4 text-right whitespace-nowrap">
-                            <button onclick="testManualWA(${ag.id})" class="text-green-500 hover:bg-green-50 p-2 rounded transition" title="Test WA PIC"><i class="fab fa-whatsapp"></i></button>
+                            <button onclick="testManualWA(${ag.id})" class="text-green-500 hover:bg-green-50 p-2 rounded transition" title="Kirim Info ke PIC"><i class="fab fa-whatsapp"></i></button>
                             ${actionBtns}
                         </td>
                     </tr>
