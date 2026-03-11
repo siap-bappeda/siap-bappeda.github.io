@@ -659,17 +659,24 @@
                         <textarea id="notulensi-text" rows="5" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition" placeholder="Ketik ringkasan atau hasil kesepakatan agenda di sini..."></textarea>
                     </div>
                     
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2 flex items-center">
+                            <i class="fas fa-cloud-upload-alt mr-2 text-brand-500"></i> Unggah Dokumentasi / Foto
+                        </label>
+                        <input type="file" id="notulensi-file" accept="image/*,.pdf,.doc,.docx" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 transition">
+                        <p class="text-[11px] text-gray-500 mt-1">Pilih file gambar atau dokumen. Sistem akan otomatis mengunggah file ke Google Drive server.</p>
+                    </div>
+
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2 flex items-center">
-                            <i class="fas fa-link mr-2 text-blue-500"></i> Link Lampiran / Dokumentasi (Opsional)
+                            <i class="fas fa-link mr-2 text-blue-500"></i> Link Tautan Eksternal (Opsional)
                         </label>
-                        <input type="url" id="notulensi-link" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition" placeholder="Contoh: https://drive.google.com/drive/folders/...">
-                        <p class="text-[11px] text-gray-500 mt-1">Gunakan link Google Drive untuk foto kegiatan, daftar hadir, dsb.</p>
+                        <input type="url" id="notulensi-link" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition" placeholder="Atau tempel link secara manual di sini...">
                     </div>
 
                     <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
                         <button type="button" onclick="closeModal('notulensi-modal')" class="px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-medium rounded-lg transition text-sm">Tutup</button>
-                        <button type="submit" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg shadow transition text-sm flex items-center">
+                        <button type="submit" id="btn-save-notulensi" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg shadow transition text-sm flex items-center">
                             <i class="fas fa-save mr-2"></i> Simpan Notulensi
                         </button>
                     </div>
@@ -1125,6 +1132,10 @@
 
             filtered.forEach(ag => {
                 const s = getStatusConfig(ag.status);
+                // Badge for public viewing if notulensi docs exist
+                const docBadge = (ag.notulensi_link && ag.notulensi_link.trim() !== '') 
+                    ? `<a href="${ag.notulensi_link}" target="_blank" class="mt-3 inline-flex items-center text-xs text-brand-600 bg-brand-50 px-2 py-1 rounded hover:bg-brand-100 transition"><i class="fas fa-file-alt mr-1"></i> Dokumentasi Tersedia</a>` : '';
+
                 container.innerHTML += `
                     <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition border border-gray-100 overflow-hidden flex flex-col h-full relative group">
                         <div class="h-2 w-full ${s.bg.replace('100', '500')}"></div>
@@ -1139,6 +1150,7 @@
                                 <div class="flex items-center"><i class="far fa-clock w-5 text-brand-500"></i> ${formatTime(ag.time)} WIB</div>
                                 <div class="flex items-start"><i class="fas fa-map-marker-alt w-5 text-brand-500 mt-0.5"></i> <span>${ag.location}</span></div>
                             </div>
+                            ${docBadge}
                         </div>
                     </div>`;
             });
@@ -1200,7 +1212,7 @@
         }
 
         // ==========================================
-        // NOTULENSI LAPORAN LOGIC
+        // NOTULENSI LAPORAN LOGIC DENGAN UPLOAD
         // ==========================================
         function renderNotulensiTable() {
             const tbody = document.getElementById('notulensi-table');
@@ -1222,11 +1234,10 @@
                     ? `<span class="bg-emerald-100 text-emerald-700 text-xs px-3 py-1 rounded-full font-bold"><i class="fas fa-check-circle mr-1"></i> Terisi</span>` 
                     : `<span class="bg-gray-100 text-gray-500 text-xs px-3 py-1 rounded-full font-bold"><i class="fas fa-exclamation-circle mr-1"></i> Kosong</span>`;
                 
-                // Cek izin (Superadmin atau Admin Bidang yg bersesuaian)
                 const canEdit = currentUser.role === 'superadmin' || currentUser.role === ag.bidang || currentUser.role === 'Semua Bidang';
                 
                 const btnAction = canEdit 
-                    ? `<button onclick="openNotulensiModal(${ag.id})" class="bg-brand-50 hover:bg-brand-100 text-brand-600 text-xs font-bold px-4 py-2 rounded transition">Input / Edit</button>`
+                    ? `<button onclick="openNotulensiModal(${ag.id})" class="bg-brand-50 hover:bg-brand-100 text-brand-600 text-xs font-bold px-4 py-2 rounded transition">Input / Upload</button>`
                     : `<button onclick="openNotulensiModal(${ag.id}, true)" class="bg-gray-50 hover:bg-gray-100 text-gray-600 text-xs font-bold px-4 py-2 rounded transition">Lihat</button>`;
 
                 tbody.innerHTML += `
@@ -1266,18 +1277,22 @@
             
             const txtArea = document.getElementById('notulensi-text');
             const lnkInput = document.getElementById('notulensi-link');
-            const submitBtn = document.querySelector('#notulensi-form button[type="submit"]');
+            const fileInput = document.getElementById('notulensi-file');
+            const submitBtn = document.getElementById('btn-save-notulensi');
 
             txtArea.value = ag.notulensi_text || '';
             lnkInput.value = ag.notulensi_link || '';
+            fileInput.value = ''; // Reset input file
 
             if(readOnly) {
                 txtArea.readOnly = true;
                 lnkInput.readOnly = true;
+                fileInput.disabled = true;
                 submitBtn.style.display = 'none';
             } else {
                 txtArea.readOnly = false;
                 lnkInput.readOnly = false;
+                fileInput.disabled = false;
                 submitBtn.style.display = 'flex';
             }
 
@@ -1292,11 +1307,63 @@
             if(!ag) return;
 
             ag.notulensi_text = document.getElementById('notulensi-text').value;
-            ag.notulensi_link = document.getElementById('notulensi-link').value;
+            let manualLink = document.getElementById('notulensi-link').value;
+            
+            const fileInput = document.getElementById('notulensi-file');
+            
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                Swal.fire({ title: 'Mengunggah ke Drive...', text: 'Harap jangan tutup halaman ini.', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+                
+                const reader = new FileReader();
+                reader.onload = async function() {
+                    const base64Data = reader.result.split(',')[1];
+                    let uploadedUrl = "";
+                    
+                    if (GAS_URL) {
+                        try {
+                            let response = await fetch(GAS_URL, {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    action: 'uploadFile',
+                                    data: {
+                                        name: `Dokumentasi_${ag.title}_${file.name}`,
+                                        mimeType: file.type,
+                                        base64: base64Data
+                                    }
+                                })
+                            });
+                            let result = await response.json();
+                            if (result.status === 'success') {
+                                uploadedUrl = result.url;
+                            } else {
+                                // Menampilkan pesan error asli dari Google Apps Script
+                                Swal.fire('Gagal Server', result.message || 'Terjadi kesalahan saat mengunggah file ke Drive.', 'error');
+                                return;
+                            }
+                        } catch(e) {
+                            Swal.fire('Network Error', 'Koneksi ke Google Drive terputus.', 'error');
+                            return;
+                        }
+                    } else {
+                        await new Promise(r => setTimeout(r, 1000));
+                        uploadedUrl = "https://drive.google.com/file/d/simulasi-" + Date.now();
+                    }
 
-            Swal.fire({ title: 'Menyimpan Notulensi...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+                    ag.notulensi_link = manualLink ? (manualLink + " | " + uploadedUrl) : uploadedUrl;
+                    proceedSaveNotulensi(ag);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                ag.notulensi_link = manualLink;
+                proceedSaveNotulensi(ag);
+            }
+        }
+
+        async function proceedSaveNotulensi(ag) {
+            Swal.fire({ title: 'Menyimpan Database...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
             await saveToDatabase('saveAgenda', ag);
-            Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Laporan notulensi telah disimpan.', timer: 1500, showConfirmButton: false });
+            Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Catatan & Dokumen telah tersimpan!', timer: 1500, showConfirmButton: false });
             
             closeModal('notulensi-modal');
             renderNotulensiTable();
@@ -1355,7 +1422,6 @@
         async function saveAgenda(e) {
             e.preventDefault();
             const idVal = document.getElementById('agenda-id').value;
-            // Get existing or create new
             let existingAgenda = idVal ? dbAgendas.find(a => a.id === parseInt(idVal)) : {};
             
             const payload = {
