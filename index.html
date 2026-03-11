@@ -108,12 +108,12 @@
         </header>
 
         <!-- Hero Section -->
-        <div class="relative bg-brand-900 overflow-hidden">
+        <div class="relative bg-brand-900 pb-20 lg:pb-28"> <!-- Added padding bottom for overlapping banner -->
             <div class="absolute inset-0">
                 <img class="w-full h-full object-cover opacity-20" src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" alt="Background">
                 <div class="absolute inset-0 bg-brand-900/60 mix-blend-multiply"></div>
             </div>
-            <div class="relative max-w-7xl mx-auto py-12 px-4 sm:py-24 sm:px-6 lg:px-8 text-center">
+            <div class="relative max-w-7xl mx-auto py-12 px-4 sm:py-24 sm:px-6 lg:px-8 text-center z-10">
                 <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
                     Sistem Informasi Agenda Pimpinan
                 </h1>
@@ -129,8 +129,43 @@
             </div>
         </div>
 
+        <!-- NEW: Beautiful Feature Banner (Overlapping) -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 -mt-16 sm:-mt-20 mb-12">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+                    <!-- Feature 1 -->
+                    <div class="p-6 sm:p-8 hover:bg-gray-50 transition duration-300">
+                        <div class="w-12 h-12 inline-flex items-center justify-center rounded-xl bg-blue-100 text-blue-600 mb-4 shadow-sm">
+                            <i class="fas fa-sync-alt text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Informasi Real-time</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Seluruh jadwal agenda kegiatan pimpinan diperbarui secara langsung untuk memastikan akurasi data.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="p-6 sm:p-8 hover:bg-gray-50 transition duration-300 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-green-50 rounded-full opacity-50 z-0"></div>
+                        <div class="relative z-10">
+                            <div class="w-12 h-12 inline-flex items-center justify-center rounded-xl bg-green-100 text-green-600 mb-4 shadow-sm">
+                                <i class="fab fa-whatsapp text-2xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-2">Notifikasi WhatsApp</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed">Sistem dilengkapi bot pengingat otomatis ke PIC pada H-1 dan 2 Jam sebelum kegiatan berlangsung.</p>
+                        </div>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="p-6 sm:p-8 hover:bg-gray-50 transition duration-300">
+                        <div class="w-12 h-12 inline-flex items-center justify-center rounded-xl bg-orange-100 text-orange-600 mb-4 shadow-sm">
+                            <i class="fas fa-eye text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Transparansi Publik</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Masyarakat dan instansi terkait dapat memantau jadwal kegiatan pemerintahan secara terbuka.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Public Agenda List -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 w-full">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
                 <h2 class="text-2xl font-bold text-gray-900">Agenda Mendatang</h2>
                 <div class="flex space-x-2 overflow-x-auto pb-2 sm:pb-0">
@@ -252,6 +287,15 @@
             </div>
             
             <div class="p-4 border-t border-gray-200">
+                <!-- Status Indikator Bot WA -->
+                <div class="bg-gray-50 rounded-lg p-3 mb-3 text-xs border border-gray-100">
+                    <div class="flex items-center gap-2 font-semibold text-gray-700 mb-1">
+                        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse" id="wa-bot-indicator"></div>
+                        WA Pengingat Aktif
+                    </div>
+                    <span class="text-gray-500">Mengecek jadwal otomatis setiap menit.</span>
+                </div>
+
                 <button onclick="handleLogout()" class="flex items-center w-full px-4 py-2 text-sm text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition">
                     <i class="fas fa-sign-out-alt mr-2"></i> Keluar Sistem
                 </button>
@@ -301,7 +345,7 @@
                     <div class="bg-blue-50 border border-blue-100 text-blue-800 px-4 py-3 rounded-xl mb-6 flex items-start shadow-sm">
                         <i class="fas fa-info-circle text-brand-500 mt-0.5 mr-3 text-lg"></i>
                         <div class="text-sm">
-                            <p><strong>Selamat Datang, <span id="welcome-name">Admin</span>!</strong> Ini adalah ringkasan monitoring data agenda pimpinan. Anda dapat mengelola data secara penuh pada menu Kelola Agenda.</p>
+                            <p><strong>Selamat Datang, <span id="welcome-name">Admin</span>!</strong> Ini adalah ringkasan monitoring data agenda pimpinan. Sistem <b>Pengingat WhatsApp Otomatis</b> (H-1 & 2 Jam) sedang berjalan aktif di latar belakang.</p>
                         </div>
                     </div>
 
@@ -372,23 +416,30 @@
                 <div id="content-menu-agenda" class="menu-content hidden">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
                         <div class="p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50">
-                            <h2 class="text-lg font-bold text-gray-800">Daftar Seluruh Agenda</h2>
+                            <div>
+                                <h2 class="text-lg font-bold text-gray-800">Daftar Seluruh Agenda</h2>
+                                <p class="text-xs text-gray-500 mt-1">Mengelola jadwal & PIC untuk notifikasi WhatsApp</p>
+                            </div>
                             <div class="flex gap-2 w-full sm:w-auto">
-                                <input type="text" id="admin-search" onkeyup="renderAdminAgendas()" placeholder="Cari agenda..." class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 w-full sm:w-64">
+                                <button onclick="forceCheckReminders()" class="bg-green-100 hover:bg-green-200 text-green-700 text-sm font-bold px-4 py-2 rounded-lg transition flex items-center whitespace-nowrap">
+                                    <i class="fab fa-whatsapp mr-2"></i> Cek WA Bot
+                                </button>
+                                <input type="text" id="admin-search" onkeyup="renderAdminAgendas()" placeholder="Cari agenda..." class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 w-full sm:w-48">
                                 <button onclick="openModal()" class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold px-4 py-2 rounded-lg shadow transition flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus sm:mr-2"></i> <span class="hidden sm:inline">Tambah Agenda</span><span class="sm:hidden">Tambah</span>
                                 </button>
                             </div>
                         </div>
                         <div class="overflow-x-auto w-full">
-                            <table class="w-full text-left border-collapse min-w-[800px]">
+                            <table class="w-full text-left border-collapse min-w-[900px]">
                                 <thead>
                                     <tr class="bg-white border-b border-gray-200 text-xs uppercase text-gray-500 font-semibold tracking-wider">
-                                        <th class="p-4 w-1/6">Tanggal & Waktu</th>
-                                        <th class="p-4 w-1/3">Nama Kegiatan</th>
-                                        <th class="p-4 w-1/4">Lokasi</th>
-                                        <th class="p-4 text-center w-1/6">Status</th>
-                                        <th class="p-4 text-right w-1/6">Aksi</th>
+                                        <th class="p-4 w-40">Tanggal & Waktu</th>
+                                        <th class="p-4 w-64">Nama Kegiatan</th>
+                                        <th class="p-4 w-48">Lokasi & Bidang</th>
+                                        <th class="p-4 w-56">PIC & Status WA</th>
+                                        <th class="p-4 text-center w-32">Status Agenda</th>
+                                        <th class="p-4 text-right w-32">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-sm" id="admin-agenda-table">
@@ -440,12 +491,11 @@
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Lokasi *</label>
-                        <input type="text" id="agenda-location" required placeholder="Contoh: Ruang Rapat Bappeda" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
-                    </div>
-
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Lokasi *</label>
+                            <input type="text" id="agenda-location" required placeholder="Contoh: Ruang Rapat Bappeda" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
+                        </div>
                         <div>
                             <label class="block text-gray-700 text-sm font-bold mb-2">Bidang Terkait</label>
                             <select id="agenda-bidang" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition bg-white">
@@ -456,20 +506,42 @@
                                 <option value="Sosbud">Bidang Sosial Budaya</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Status</label>
-                            <select id="agenda-status" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition bg-white">
-                                <option value="Dikonfirmasi">Dikonfirmasi / Terjadwal</option>
-                                <option value="Persiapan">Persiapan</option>
-                                <option value="Selesai">Selesai</option>
-                                <option value="Ditunda">Ditunda / Batal</option>
-                            </select>
+                    </div>
+
+                    <!-- PENGATURAN PIC & WHATSAPP -->
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <div class="flex items-center text-green-600 mb-3">
+                            <i class="fab fa-whatsapp text-lg mr-2"></i>
+                            <h4 class="font-bold text-sm uppercase tracking-wide">Pengaturan Pengingat PIC</h4>
                         </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Nama Penanggung Jawab *</label>
+                                <input type="text" id="agenda-pic-name" required placeholder="Contoh: Bpk. Budi Santoso" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 text-sm font-bold mb-2">No. WhatsApp PIC *</label>
+                                <input type="text" id="agenda-pic-phone" required placeholder="Contoh: 081234567890" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
+                                <p class="text-[10px] text-gray-500 mt-1">Gunakan awalan 08 atau +62</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 pt-4 border-t border-gray-100">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Status Penyelenggaraan</label>
+                        <select id="agenda-status" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition bg-white">
+                            <option value="Dikonfirmasi">Dikonfirmasi / Terjadwal</option>
+                            <option value="Persiapan">Persiapan</option>
+                            <option value="Selesai">Selesai</option>
+                            <option value="Ditunda">Ditunda / Batal</option>
+                        </select>
                     </div>
 
                     <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
                         <button type="button" onclick="closeModal()" class="px-4 py-2 sm:px-5 sm:py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-lg transition text-sm sm:text-base">Batal</button>
-                        <button type="submit" class="px-4 py-2 sm:px-5 sm:py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg shadow transition text-sm sm:text-base">Simpan Agenda</button>
+                        <button type="submit" class="px-4 py-2 sm:px-5 sm:py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg shadow transition text-sm sm:text-base flex items-center">
+                            <i class="fas fa-save mr-2"></i> Simpan Agenda
+                        </button>
                     </div>
                 </form>
             </div>
@@ -478,14 +550,18 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        // --- KONFIGURASI API WHATSAPP ---
+        const API_URL = 'https://api.sidobe.com/wa/v1/send-message';
+        const API_KEY = 'AGXZOIetMUnCWxMkllsXWUKOIyRzALDWyuqDKoeXKgMCwJNtyq'; // Disesuaikan dengan API yg diberikan user
+        let reminderInterval = null;
+
         // --- DATA INITIALIZATION (LOCAL STORAGE) ---
+        // Data dummy sudah ditambahkan struktur PIC name, phone & status H1/H2
         const DUMMY_DATA = [
-            { id: 1, date: '2026-03-15', time: '09:00', title: 'Musrenbang RKPD Tingkat Kabupaten', location: 'Aula Sindang Raya', bidang: 'Perencanaan', status: 'Dikonfirmasi' },
-            { id: 2, date: '2026-03-10', time: '10:00', title: 'Rapat Paripurna LKPJ Bupati', location: 'Gedung DPRD', bidang: 'Semua Bidang', status: 'Selesai' },
-            { id: 3, date: '2026-03-12', time: '13:30', title: 'Evaluasi DAK Fisik Triwulan I', location: 'Ruang Rapat Bappeda', bidang: 'Fispra', status: 'Persiapan' },
-            { id: 4, date: '2026-03-18', time: '08:30', title: 'Rapat Penanganan Stunting Terpadu', location: 'Kantor Bupati', bidang: 'Sosbud', status: 'Dikonfirmasi' },
-            { id: 5, date: '2026-03-08', time: '09:00', title: 'FGD Pengembangan UMKM Daerah', location: 'Hotel Tahura', bidang: 'Ekonomi', status: 'Selesai' },
-            { id: 6, date: '2026-03-20', time: '14:00', title: 'Kunjungan Lapangan Pembangunan Jembatan', location: 'Kec. Pagar Jati', bidang: 'Fispra', status: 'Ditunda' }
+            { id: 1, date: '2026-03-15', time: '09:00', title: 'Musrenbang RKPD Tingkat Kabupaten', location: 'Aula Sindang Raya', bidang: 'Perencanaan', status: 'Dikonfirmasi', pic_name: 'Bpk. Ahmad', pic_phone: '081200000001', status_h1: false, status_h2: false },
+            { id: 2, date: '2026-03-10', time: '10:00', title: 'Rapat Paripurna LKPJ Bupati', location: 'Gedung DPRD', bidang: 'Semua Bidang', status: 'Selesai', pic_name: 'Ibu Rina', pic_phone: '081200000002', status_h1: true, status_h2: true },
+            { id: 3, date: '2026-03-12', time: '13:30', title: 'Evaluasi DAK Fisik Triwulan I', location: 'Ruang Rapat Bappeda', bidang: 'Fispra', status: 'Persiapan', pic_name: 'Bpk. Budi', pic_phone: '081200000003', status_h1: false, status_h2: false },
+            { id: 4, date: '2026-03-18', time: '08:30', title: 'Rapat Penanganan Stunting Terpadu', location: 'Kantor Bupati', bidang: 'Sosbud', status: 'Dikonfirmasi', pic_name: 'dr. Siti', pic_phone: '081200000004', status_h1: false, status_h2: false },
         ];
 
         function getAgendas() {
@@ -497,9 +573,139 @@
             return JSON.parse(data);
         }
 
+        // --- API & BOT WHATSAPP LOGIC ---
+        function formatPhone(phone) {
+            if(!phone) return "";
+            phone = phone.replace(/[^\d+]/g, '');
+            if (phone.startsWith('0')) return '+62' + phone.substring(1);
+            if (phone.startsWith('62')) return '+' + phone;
+            if (phone.startsWith('8')) return '+62' + phone;
+            if (!phone.startsWith('+')) return '+' + phone;
+            return phone;
+        }
+
+        async function sendWhatsApp(phone, message, typeLog = "Manual") {
+            const formattedPhone = formatPhone(phone);
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-Secret-Key': API_KEY
+                    },
+                    body: JSON.stringify({ phone: formattedPhone, message: message })
+                });
+
+                if(response.ok) {
+                    console.log(`[WA BOT - ${typeLog}] Berhasil mengirim ke ${formattedPhone}`);
+                    return true;
+                } else {
+                    console.error(`[WA BOT Error] Gagal kirim WA HTTP: ${response.status}`);
+                    return false;
+                }
+            } catch (error) {
+                console.error(`[WA BOT Network Error]`, error);
+                return false;
+            }
+        }
+
+        function startReminderBot() {
+            if(reminderInterval) clearInterval(reminderInterval);
+            // Mengecek setiap 1 menit (60000 ms) saat dashboard terbuka
+            reminderInterval = setInterval(checkAndSendReminders, 60000); 
+            document.getElementById('wa-bot-indicator').classList.add('animate-pulse');
+            document.getElementById('wa-bot-indicator').classList.replace('bg-gray-400', 'bg-green-500');
+            console.log("[BOT WA] Aktif memantau jadwal...");
+            checkAndSendReminders(); // Pengecekan pertama saat login
+        }
+
+        function stopReminderBot() {
+            if(reminderInterval) clearInterval(reminderInterval);
+            document.getElementById('wa-bot-indicator').classList.remove('animate-pulse');
+            document.getElementById('wa-bot-indicator').classList.replace('bg-green-500', 'bg-gray-400');
+            console.log("[BOT WA] Nonaktif.");
+        }
+
+        function forceCheckReminders() {
+            Swal.fire({
+                title: 'Mengecek Jadwal & Notifikasi...',
+                text: 'Sistem sedang memindai seluruh jadwal untuk mencari agenda H-1 & 2 Jam.',
+                icon: 'info',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            checkAndSendReminders();
+        }
+
+        async function checkAndSendReminders() {
+            let agendas = getAgendas();
+            const now = new Date();
+            let needsUpdate = false;
+
+            for (let i = 0; i < agendas.length; i++) {
+                let ag = agendas[i];
+                if (ag.status === 'Selesai' || ag.status === 'Ditunda') continue; // Jangan kirim kalau batal/selesai
+                if (!ag.pic_phone) continue; // Jangan kirim kalau tidak ada nomor
+
+                const agendaDateTime = new Date(`${ag.date}T${ag.time}`);
+                const diffMs = agendaDateTime - now;
+                const diffHours = diffMs / (1000 * 60 * 60);
+
+                if (diffHours < 0) continue; // Acara sudah lewat
+
+                // H-1 Check (24 s/d 2 Jam sebelum)
+                if (diffHours <= 24 && diffHours > 2 && !ag.status_h1) {
+                    const msg = `*PENGINGAT (H-1) AGENDA BAPPEDA*\n\nHalo *${ag.pic_name}*,\nMengingatkan bahwa agenda *"${ag.title}"* akan dilaksanakan BESOK pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${ag.time} WIB\n📍 Lokasi: ${ag.location}\n🏢 Bidang: ${ag.bidang}\n\nMohon pastikan persiapan selesai. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
+                    let success = await sendWhatsApp(ag.pic_phone, msg, "Otomatis H-1");
+                    if(success) {
+                        agendas[i].status_h1 = true;
+                        needsUpdate = true;
+                    }
+                }
+
+                // H-2 Jam Check (2 Jam s/d 0 Jam sebelum)
+                if (diffHours <= 2 && diffHours > 0 && !ag.status_h2) {
+                    const msg = `*PENGINGAT MENDESAK (2 JAM) BAPPEDA*\n\nHalo *${ag.pic_name}*,\nAgenda *"${ag.title}"* akan dimulai DALAM WAKTU DEKAT pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${ag.time} WIB\n📍 Lokasi: ${ag.location}\n\nMohon standby. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
+                    let success = await sendWhatsApp(ag.pic_phone, msg, "Otomatis 2 Jam");
+                    if(success) {
+                        agendas[i].status_h2 = true;
+                        needsUpdate = true;
+                    }
+                }
+            }
+
+            if(needsUpdate) {
+                localStorage.setItem('siap_agendas', JSON.stringify(agendas));
+                if(!document.getElementById('content-menu-agenda').classList.contains('hidden')){
+                    renderAdminAgendas(); // Refresh tabel jika sedang dibuka
+                }
+            }
+        }
+
+        async function testManualWA(id) {
+            const ag = getAgendas().find(a => a.id === id);
+            if(!ag || !ag.pic_phone) return Swal.fire('Error', 'Nomor WA tidak tersedia', 'error');
+
+            Swal.fire({
+                title: 'Mengirim Pesan...',
+                text: 'Harap tunggu.',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading() }
+            });
+
+            const msg = `*INFO AGENDA PIMPINAN*\n\nHalo *${ag.pic_name}*,\nIni adalah tes pesan dari Sistem SIAP BAPPEDA untuk agenda:\n*"${ag.title}"*\n\nTerima kasih.`;
+            const isSuccess = await sendWhatsApp(ag.pic_phone, msg, "Tes Manual");
+
+            if(isSuccess) {
+                Swal.fire('Berhasil!', `Pesan uji coba terkirim ke ${ag.pic_phone}`, 'success');
+            } else {
+                Swal.fire('Gagal!', 'Terjadi kesalahan jaringan atau API Key tidak valid. (Cek CORS Console)', 'error');
+            }
+        }
+
         // --- VIEW MANAGEMENT (FIXED OVERLAPPING) ---
         function switchMainView(viewId) {
-            // Sembunyikan semua tampilan dengan mengatur Tailwind class
             const views = ['public-view', 'login-view', 'app-view'];
             views.forEach(id => {
                 const el = document.getElementById(id);
@@ -507,22 +713,23 @@
                 el.classList.remove('flex');
             });
             
-            // Tampilkan hanya tampilan yang diminta
             const target = document.getElementById(viewId);
             target.classList.remove('hidden');
             target.classList.add('flex');
             
-            // Trigger proses rendering yang sesuai
             if (viewId === 'public-view') {
+                stopReminderBot(); // Matikan WA bot jika di halaman publik
                 renderPublicAgendas();
             } else if (viewId === 'app-view') {
                 updateDashboardStats();
                 renderAdminAgendas();
+                startReminderBot(); // Nyalakan WA bot saat login & dashboard terbuka
+            } else if (viewId === 'login-view') {
+                stopReminderBot();
             }
         }
 
         function switchMenu(menuId, btnElement) {
-            // Update Sidebar UI
             document.querySelectorAll('.menu-btn').forEach(btn => {
                 btn.classList.remove('sidebar-item-active', 'bg-eff6ff', 'text-brand-600');
                 btn.classList.add('text-gray-600');
@@ -530,7 +737,6 @@
             btnElement.classList.add('sidebar-item-active');
             btnElement.classList.remove('text-gray-600');
 
-            // Switch Content
             document.querySelectorAll('.menu-content').forEach(el => {
                 el.classList.add('hidden');
                 el.classList.remove('block');
@@ -538,36 +744,29 @@
             document.getElementById('content-' + menuId).classList.remove('hidden');
             document.getElementById('content-' + menuId).classList.add('block');
 
-            // Update Topbar Title
             document.getElementById('topbar-title').innerText = btnElement.innerText.trim();
 
-            // Render logic based on menu
             if (menuId === 'menu-dashboard') updateDashboardStats();
             if (menuId === 'menu-agenda') renderAdminAgendas();
 
-            // Auto close mobile menu after clicking
             if (window.innerWidth < 768) {
                 toggleMobileMenu();
             }
         }
 
-        // --- MOBILE MENU TOGGLE ---
         function toggleMobileMenu() {
             const sidebar = document.getElementById('sidebar');
             const backdrop = document.getElementById('sidebar-backdrop');
             
             if (sidebar.classList.contains('hidden') || sidebar.classList.contains('-translate-x-full')) {
-                // Tampilkan sidebar
                 sidebar.classList.remove('hidden', '-translate-x-full');
                 sidebar.classList.add('flex', 'translate-x-0');
                 backdrop.classList.remove('hidden');
             } else {
-                // Sembunyikan sidebar
                 sidebar.classList.add('-translate-x-full');
                 sidebar.classList.remove('translate-x-0');
                 backdrop.classList.add('hidden');
                 
-                // Tambahkan timeout untuk memberikan waktu animasi sebelum di-hide sepenuhnya
                 setTimeout(() => {
                     sidebar.classList.add('hidden');
                     sidebar.classList.remove('flex');
@@ -632,8 +831,8 @@
                 (a.title.toLowerCase().includes(search) || a.location.toLowerCase().includes(search))
             );
             
-            // Sort by date ascending
-            filtered.sort((a,b) => new Date(a.date) - new Date(b.date));
+            // Urutkan jadwal yang terdekat
+            filtered.sort((a,b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
 
             container.innerHTML = '';
             
@@ -647,7 +846,7 @@
                 const html = `
                     <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition border border-gray-100 overflow-hidden flex flex-col h-full relative group">
                         <div class="h-2 w-full ${s.bg.replace('100', '500')}"></div>
-                        <div class="p-5 sm:p-6 flex-1 flex flex-col">
+                        <div class="p-5 flex-1 flex flex-col">
                             <div class="flex justify-between items-start mb-4">
                                 <span class="${s.bg} ${s.text} text-xs font-bold px-3 py-1 rounded-full"><i class="fas ${s.icon} mr-1"></i> ${ag.status}</span>
                                 <span class="text-[10px] sm:text-xs font-semibold text-gray-400 border border-gray-200 px-2 py-1 rounded">${ag.bidang}</span>
@@ -671,34 +870,50 @@
             let agendas = getAgendas();
 
             let filtered = agendas.filter(a => a.title.toLowerCase().includes(search));
-            filtered.sort((a,b) => new Date(b.date) - new Date(a.date)); // Descending for admin
+            filtered.sort((a,b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`)); // Descending for admin
 
             tbody.innerHTML = '';
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-500">Belum ada data agenda.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">Belum ada data agenda.</td></tr>`;
                 return;
             }
 
             filtered.forEach(ag => {
                 const s = getStatusConfig(ag.status);
+                
+                // WA Badge Styles
+                const badgeH1 = ag.status_h1 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400';
+                const badgeH2 = ag.status_h2 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400';
+
                 const html = `
                     <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
-                        <td class="p-3 sm:p-4">
+                        <td class="p-4">
                             <div class="font-bold text-gray-800">${formatDate(ag.date)}</div>
                             <div class="text-[11px] sm:text-xs text-gray-500">${ag.time} WIB</div>
                         </td>
-                        <td class="p-3 sm:p-4">
-                            <div class="font-medium text-brand-700 text-sm sm:text-base">${ag.title}</div>
-                            <div class="text-[11px] sm:text-xs text-gray-500 mt-1">Bidang: ${ag.bidang}</div>
+                        <td class="p-4">
+                            <div class="font-medium text-brand-700 leading-tight">${ag.title}</div>
                         </td>
-                        <td class="p-3 sm:p-4 text-gray-600 text-xs sm:text-sm"><i class="fas fa-map-marker-alt text-red-400 mr-1"></i> ${ag.location}</td>
-                        <td class="p-3 sm:p-4 text-center">
-                            <span class="${s.bg} ${s.text} text-[10px] sm:text-xs font-semibold px-2 py-1 sm:px-2.5 sm:py-1 rounded-full border border-white shadow-sm whitespace-nowrap">${ag.status}</span>
+                        <td class="p-4 text-gray-600 text-xs sm:text-sm">
+                            <div class="flex items-start"><i class="fas fa-map-marker-alt text-red-400 mr-2 mt-0.5 w-3"></i> ${ag.location}</div>
+                            <div class="flex items-center mt-1 text-gray-400"><i class="fas fa-tag mr-2 w-3"></i> ${ag.bidang}</div>
                         </td>
-                        <td class="p-3 sm:p-4 text-right whitespace-nowrap">
-                            <button onclick="editAgenda(${ag.id})" class="text-brand-500 hover:bg-brand-50 p-1.5 sm:p-2 rounded transition mx-0.5" title="Edit"><i class="fas fa-edit"></i></button>
-                            <button onclick="deleteAgenda(${ag.id})" class="text-red-500 hover:bg-red-50 p-1.5 sm:p-2 rounded transition mx-0.5" title="Hapus"><i class="fas fa-trash"></i></button>
+                        <td class="p-4">
+                            <div class="font-semibold text-gray-800 text-xs mb-1"><i class="fas fa-user text-gray-400 mr-1"></i> ${ag.pic_name || 'Belum diatur'}</div>
+                            <div class="text-xs text-green-600 mb-2"><i class="fab fa-whatsapp mr-1"></i> ${ag.pic_phone ? formatPhone(ag.pic_phone) : '-'}</div>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${badgeH1}">H-1: ${ag.status_h1 ? 'TERKIRIM' : 'MENUNGGU'}</span>
+                                <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${badgeH2}">2J: ${ag.status_h2 ? 'TERKIRIM' : 'MENUNGGU'}</span>
+                            </div>
+                        </td>
+                        <td class="p-4 text-center">
+                            <span class="${s.bg} ${s.text} text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full border border-white shadow-sm whitespace-nowrap">${ag.status}</span>
+                        </td>
+                        <td class="p-4 text-right whitespace-nowrap">
+                            <button onclick="testManualWA(${ag.id})" class="text-green-500 hover:bg-green-50 p-2 rounded transition" title="Test WA PIC"><i class="fab fa-whatsapp"></i></button>
+                            <button onclick="editAgenda(${ag.id})" class="text-brand-500 hover:bg-brand-50 p-2 rounded transition" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteAgenda(${ag.id})" class="text-red-500 hover:bg-red-50 p-2 rounded transition" title="Hapus"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 `;
@@ -726,6 +941,8 @@
                 document.getElementById('agenda-location').value = ag.location;
                 document.getElementById('agenda-bidang').value = ag.bidang;
                 document.getElementById('agenda-status').value = ag.status;
+                document.getElementById('agenda-pic-name').value = ag.pic_name || '';
+                document.getElementById('agenda-pic-phone').value = ag.pic_phone || '';
             } else {
                 document.getElementById('modal-title').innerText = "Tambah Agenda Baru";
                 document.getElementById('agenda-form').reset();
@@ -759,12 +976,18 @@
                 location: document.getElementById('agenda-location').value,
                 bidang: document.getElementById('agenda-bidang').value,
                 status: document.getElementById('agenda-status').value,
+                pic_name: document.getElementById('agenda-pic-name').value,
+                pic_phone: document.getElementById('agenda-pic-phone').value,
+                status_h1: false, // Reset saat disimpan/diedit
+                status_h2: false
             };
 
             if (idVal) {
                 const index = agendas.findIndex(a => a.id === parseInt(idVal));
-                agendas[index] = newAgenda;
-                Swal.fire({ icon: 'success', title: 'Tersimpan', text: 'Agenda berhasil diubah!', timer: 1500, showConfirmButton: false });
+                // Pertahankan status WA sebelumnya jika hanya mengedit lokasi/waktu kecil (Opsional)
+                // Di sini kita reset saja agar jika waktu berubah, notifikasi terkirim ulang
+                agendas[index] = newAgenda; 
+                Swal.fire({ icon: 'success', title: 'Tersimpan', text: 'Agenda & Pengaturan WA berhasil diubah!', timer: 1500, showConfirmButton: false });
             } else {
                 agendas.push(newAgenda);
                 Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Agenda baru ditambahkan!', timer: 1500, showConfirmButton: false });
@@ -807,7 +1030,6 @@
         function updateDashboardStats() {
             const agendas = getAgendas();
             
-            // Calculate Stats
             const total = agendas.length;
             const selesai = agendas.filter(a => a.status === 'Selesai').length;
             const mendatang = agendas.filter(a => a.status === 'Dikonfirmasi' || a.status === 'Persiapan').length;
@@ -818,15 +1040,12 @@
             document.getElementById('stat-mendatang').innerText = mendatang;
             document.getElementById('stat-batal').innerText = batal;
 
-            // Pastikan elemen Canvas tersedia sebelum merender Chart
             const ctxDElement = document.getElementById('donutChart');
             const ctxBElement = document.getElementById('barChart');
             
             if (!ctxDElement || !ctxBElement) return;
 
-            // Draw Charts (Use setTimeout to ensure DOM visibility calculations are ready)
             setTimeout(() => {
-                // Donut Chart - Status
                 if(donutChart) donutChart.destroy();
                 donutChart = new Chart(ctxDElement, {
                     type: 'doughnut',
@@ -847,7 +1066,6 @@
                     }
                 });
 
-                // Bar Chart - Bidang
                 const bidangCounts = { 'Perencanaan': 0, 'Fispra': 0, 'Ekonomi': 0, 'Sosbud': 0, 'Semua Bidang': 0 };
                 agendas.forEach(a => { if(bidangCounts[a.bidang] !== undefined) bidangCounts[a.bidang]++; });
 
