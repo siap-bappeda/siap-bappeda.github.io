@@ -108,7 +108,7 @@
         </header>
 
         <!-- Hero Section -->
-        <div class="relative bg-brand-900 pb-20 lg:pb-28"> <!-- Added padding bottom for overlapping banner -->
+        <div class="relative bg-brand-900 pb-20 lg:pb-28"> 
             <div class="absolute inset-0">
                 <img class="w-full h-full object-cover opacity-20" src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" alt="Background">
                 <div class="absolute inset-0 bg-brand-900/60 mix-blend-multiply"></div>
@@ -129,7 +129,7 @@
             </div>
         </div>
 
-        <!-- NEW: Beautiful Feature Banner (Overlapping) -->
+        <!-- Feature Banner (Overlapping) -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 -mt-16 sm:-mt-20 mb-12">
             <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
                 <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
@@ -155,10 +155,10 @@
                     <!-- Feature 3 -->
                     <div class="p-6 sm:p-8 hover:bg-gray-50 transition duration-300">
                         <div class="w-12 h-12 inline-flex items-center justify-center rounded-xl bg-orange-100 text-orange-600 mb-4 shadow-sm">
-                            <i class="fas fa-eye text-xl"></i>
+                            <i class="fas fa-cloud text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Transparansi Publik</h3>
-                        <p class="text-gray-500 text-sm leading-relaxed">Masyarakat dan instansi terkait dapat memantau jadwal kegiatan pemerintahan secara terbuka.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Penyimpanan Terpusat</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Terintegrasi penuh dengan Cloud Database (Google Sheets) untuk manajemen data yang aman.</p>
                     </div>
                 </div>
             </div>
@@ -201,30 +201,17 @@
                     <img src="https://bengkulutengahkab.go.id/upload/images/halaman/inner/cropped-logoweb-1.png" alt="Logo" class="w-12 h-12 object-contain" onerror="this.src='https://cdn-icons-png.flaticon.com/512/8636/8636085.png'">
                 </div>
                 <h1 class="text-2xl font-bold text-gray-800">SIAP BAPPEDA</h1>
-                <p class="text-sm text-gray-500 mt-1">Sistem Informasi Agenda Pimpinan<br>Masuk ke Ruang Kerja</p>
+                <p class="text-sm text-gray-500 mt-1">Login dengan data dari Google Sheets</p>
             </div>
 
             <form id="login-form" onsubmit="handleLogin(event)">
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="role">Pilih Peran</label>
-                    <div class="relative">
-                        <select id="role" class="block appearance-none w-full bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:ring-2 focus:ring-brand-500 transition">
-                            <option value="superadmin">Superuser / Pimpinan</option>
-                            <option value="perencanaan">Admin Bidang Perencanaan Makro</option>
-                            <option value="fispra">Admin Bidang Fisik & Prasarana</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
-                            <i class="fas fa-chevron-down text-sm"></i>
-                        </div>
-                    </div>
-                </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-semibold mb-2" for="username">Username</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-user text-gray-400"></i>
                         </div>
-                        <input class="block w-full bg-gray-50 border border-gray-300 text-gray-700 py-3 pl-10 pr-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition" id="username" type="text" placeholder="Masukkan username" required value="admin">
+                        <input class="block w-full bg-gray-50 border border-gray-300 text-gray-700 py-3 pl-10 pr-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition" id="username" type="text" placeholder="Masukkan username" required>
                     </div>
                 </div>
                 <div class="mb-6">
@@ -233,13 +220,16 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-lock text-gray-400"></i>
                         </div>
-                        <input class="block w-full bg-gray-50 border border-gray-300 text-gray-700 py-3 pl-10 pr-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition" id="password" type="password" placeholder="••••••••" required value="password">
+                        <input class="block w-full bg-gray-50 border border-gray-300 text-gray-700 py-3 pl-10 pr-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition" id="password" type="password" placeholder="••••••••" required>
                     </div>
                 </div>
                 <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition duration-200 flex justify-center items-center">
                     <i class="fas fa-sign-in-alt mr-2"></i> Masuk Dashboard
                 </button>
             </form>
+            <div class="mt-4 text-center text-xs text-gray-400">
+                Data disinkronisasi dengan Database Server
+            </div>
         </div>
     </div>
 
@@ -273,15 +263,15 @@
                     </a>
                 </nav>
 
-                <div class="px-6 mt-8 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Lainnya</div>
+                <div class="px-6 mt-8 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Administrator</div>
                 <nav class="space-y-1">
-                    <a href="#" onclick="switchMenu('menu-placeholder', this)" class="menu-btn flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                        <i class="fas fa-users w-6 text-center mr-2"></i>
-                        <span class="text-sm">Daftar Tamu</span>
+                    <a href="#" id="menu-users-btn" onclick="switchMenu('menu-users', this)" class="menu-btn flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <i class="fas fa-users-cog w-6 text-center mr-2"></i>
+                        <span class="text-sm">Manajemen Pengguna</span>
                     </a>
                     <a href="#" onclick="switchMenu('menu-placeholder', this)" class="menu-btn flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
                         <i class="fas fa-file-alt w-6 text-center mr-2"></i>
-                        <span class="text-sm">Notulensi & Laporan</span>
+                        <span class="text-sm">Notulensi Laporan</span>
                     </a>
                 </nav>
             </div>
@@ -315,14 +305,12 @@
                 </div>
 
                 <div class="flex items-center space-x-3 sm:space-x-5">
-                    <button onclick="switchMainView('public-view')" class="text-sm text-brand-600 hover:text-brand-800 font-medium hidden sm:flex items-center border border-brand-200 bg-brand-50 px-3 py-1.5 rounded-lg transition">
-                        <i class="fas fa-external-link-alt mr-2"></i> Lihat Tampilan Publik
-                    </button>
+                    <div id="db-status-indicator" class="hidden sm:flex items-center text-xs px-2 py-1 rounded bg-green-50 text-green-600 border border-green-200" title="Terhubung ke Database">
+                        <i class="fas fa-database mr-1"></i> Sync Aktif
+                    </div>
 
-                    <!-- Notifications -->
-                    <button class="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition relative">
-                        <i class="fas fa-bell text-sm"></i>
-                        <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>
+                    <button onclick="switchMainView('public-view')" class="text-sm text-brand-600 hover:text-brand-800 font-medium hidden sm:flex items-center border border-brand-200 bg-brand-50 px-3 py-1.5 rounded-lg transition">
+                        <i class="fas fa-external-link-alt mr-2"></i> Tampilan Publik
                     </button>
 
                     <!-- User Profile -->
@@ -330,7 +318,7 @@
                         <img src="" alt="User" class="w-9 h-9 rounded-full mr-2 sm:mr-3 shadow-sm border border-gray-200" id="user-avatar">
                         <div class="hidden md:block text-right mr-2">
                             <div class="text-sm font-semibold text-gray-800 leading-tight" id="user-name">Admin</div>
-                            <div class="text-xs text-gray-500" id="user-role">Role</div>
+                            <div class="text-[10px] uppercase font-bold text-brand-600" id="user-role">Role</div>
                         </div>
                     </div>
                 </div>
@@ -345,7 +333,7 @@
                     <div class="bg-blue-50 border border-blue-100 text-blue-800 px-4 py-3 rounded-xl mb-6 flex items-start shadow-sm">
                         <i class="fas fa-info-circle text-brand-500 mt-0.5 mr-3 text-lg"></i>
                         <div class="text-sm">
-                            <p><strong>Selamat Datang, <span id="welcome-name">Admin</span>!</strong> Ini adalah ringkasan monitoring data agenda pimpinan. Sistem <b>Pengingat WhatsApp Otomatis</b> (H-1 & 2 Jam) sedang berjalan aktif di latar belakang.</p>
+                            <p><strong>Selamat Datang, <span id="welcome-name">Admin</span>!</strong> Sistem ini telah terintegrasi dengan <b>Google Sheets</b> sebagai basis data dan <b>Bot WA Otomatis</b> yang aktif mengirim H-1 dan 2 Jam sebelum acara.</p>
                         </div>
                     </div>
 
@@ -421,8 +409,8 @@
                                 <p class="text-xs text-gray-500 mt-1">Mengelola jadwal & PIC untuk notifikasi WhatsApp</p>
                             </div>
                             <div class="flex gap-2 w-full sm:w-auto">
-                                <button onclick="forceCheckReminders()" class="bg-green-100 hover:bg-green-200 text-green-700 text-sm font-bold px-4 py-2 rounded-lg transition flex items-center whitespace-nowrap">
-                                    <i class="fab fa-whatsapp mr-2"></i> Cek WA Bot
+                                <button onclick="fetchDataFromServer()" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm px-3 py-2 rounded-lg transition flex items-center" title="Refresh Data">
+                                    <i class="fas fa-sync-alt"></i>
                                 </button>
                                 <input type="text" id="admin-search" onkeyup="renderAdminAgendas()" placeholder="Cari agenda..." class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 w-full sm:w-48">
                                 <button onclick="openModal()" class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold px-4 py-2 rounded-lg shadow transition flex items-center whitespace-nowrap">
@@ -450,7 +438,38 @@
                     </div>
                 </div>
 
-                <!-- CONTENT 3: PLACEHOLDER -->
+                <!-- CONTENT 3: MANAJEMEN PENGGUNA (ADMIN BDB) -->
+                <div id="content-menu-users" class="menu-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+                        <div class="p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50">
+                            <div>
+                                <h2 class="text-lg font-bold text-gray-800">Manajemen Pengguna</h2>
+                                <p class="text-xs text-gray-500 mt-1">Data Username & Password terhubung ke Google Sheets</p>
+                            </div>
+                            <div class="flex gap-2 w-full sm:w-auto">
+                                <button onclick="openUserModal()" class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold px-4 py-2 rounded-lg shadow transition flex items-center whitespace-nowrap">
+                                    <i class="fas fa-user-plus sm:mr-2"></i> <span class="hidden sm:inline">Tambah Admin Bidang</span><span class="sm:hidden">Tambah</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto w-full">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-white border-b border-gray-200 text-xs uppercase text-gray-500 font-semibold tracking-wider">
+                                        <th class="p-4">Username</th>
+                                        <th class="p-4">Hak Akses / Role</th>
+                                        <th class="p-4 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm" id="admin-user-table">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTENT 4: PLACEHOLDER -->
                 <div id="content-menu-placeholder" class="menu-content hidden h-full flex flex-col items-center justify-center min-h-[50vh]">
                     <div class="text-center px-4">
                         <img src="https://cdn-icons-png.flaticon.com/512/2748/2748558.png" alt="Under Construction" class="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 opacity-50">
@@ -465,11 +484,11 @@
 
     <!-- MODAL FORM TAMBAH/EDIT AGENDA -->
     <div id="agenda-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal('agenda-modal')"></div>
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl mx-auto z-10 max-h-[90vh] flex flex-col relative" id="modal-content">
             <div class="flex justify-between items-center p-5 sm:p-6 border-b border-gray-100">
                 <h3 class="text-lg sm:text-xl font-bold text-gray-800" id="modal-title">Tambah Agenda Baru</h3>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-red-500 transition p-1"><i class="fas fa-times text-xl"></i></button>
+                <button onclick="closeModal('agenda-modal')" class="text-gray-400 hover:text-red-500 transition p-1"><i class="fas fa-times text-xl"></i></button>
             </div>
             <div class="p-5 sm:p-6 overflow-y-auto">
                 <form id="agenda-form" onsubmit="saveAgenda(event)">
@@ -538,7 +557,7 @@
                     </div>
 
                     <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                        <button type="button" onclick="closeModal()" class="px-4 py-2 sm:px-5 sm:py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-lg transition text-sm sm:text-base">Batal</button>
+                        <button type="button" onclick="closeModal('agenda-modal')" class="px-4 py-2 sm:px-5 sm:py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-lg transition text-sm sm:text-base">Batal</button>
                         <button type="submit" class="px-4 py-2 sm:px-5 sm:py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg shadow transition text-sm sm:text-base flex items-center">
                             <i class="fas fa-save mr-2"></i> Simpan Agenda
                         </button>
@@ -548,35 +567,286 @@
         </div>
     </div>
 
+    <!-- MODAL FORM TAMBAH/EDIT USER -->
+    <div id="user-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal('user-modal')"></div>
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-auto z-10 max-h-[90vh] flex flex-col relative" id="user-modal-content">
+            <div class="flex justify-between items-center p-5 sm:p-6 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800" id="user-modal-title">Tambah Admin Bidang</h3>
+                <button onclick="closeModal('user-modal')" class="text-gray-400 hover:text-red-500 transition p-1"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="p-5 sm:p-6 overflow-y-auto">
+                <form id="user-form" onsubmit="saveUser(event)">
+                    <input type="hidden" id="user-id">
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Username Baru *</label>
+                        <input type="text" id="user-username" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition" placeholder="Contoh: admin_fispra">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Password *</label>
+                        <input type="text" id="user-password" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition" placeholder="Buat password">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Hak Akses (Role) *</label>
+                        <select id="user-role-select" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition bg-white">
+                            <option value="superadmin">Superadmin (Semua Akses)</option>
+                            <option value="Perencanaan">Admin Bidang Perencanaan</option>
+                            <option value="Fispra">Admin Bidang Fisik & Prasarana</option>
+                            <option value="Ekonomi">Admin Bidang Ekonomi & SDA</option>
+                            <option value="Sosbud">Admin Bidang Sosial Budaya</option>
+                        </select>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                        <button type="button" onclick="closeModal('user-modal')" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-lg transition text-sm">Batal</button>
+                        <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg shadow transition text-sm flex items-center">
+                            <i class="fas fa-save mr-2"></i> Simpan Pengguna
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // --- KONFIGURASI API WHATSAPP ---
-        const API_URL = 'https://api.sidobe.com/wa/v1/send-message';
-        const API_KEY = 'AGXZOIetMUnCWxMkllsXWUKOIyRzALDWyuqDKoeXKgMCwJNtyq'; // Disesuaikan dengan API yg diberikan user
+        // ==========================================
+        // KONFIGURASI API CLOUD & WHATSAPP
+        // ==========================================
+        const WA_API_URL = 'https://api.sidobe.com/wa/v1/send-message';
+        const WA_API_KEY = 'AGXZOIetMUnCWxMkllsXWUKOIyRzALDWyuqDKoeXKgMCwJNtyq'; 
+        
+        // PASTE URL GOOGLE APPS SCRIPT DI SINI (Biarkan kosong jika ingin mode simulasi berjalan)
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbwcxF11fqusN-ps5aRAEcGBxDBeWQ9IVliXJEVDut5DIjs2rppz2C2WKM48WkWWFqkqoQ/exec'; 
+
+        // STATE MANAJEMEN
+        let dbAgendas = [];
+        let dbUsers = [];
+        let currentUser = null;
         let reminderInterval = null;
 
-        // --- DATA INITIALIZATION (LOCAL STORAGE) ---
-        // Data dummy sudah ditambahkan struktur PIC name, phone & status H1/H2
-        const DUMMY_DATA = [
-            { id: 1, date: '2026-03-15', time: '09:00', title: 'Musrenbang RKPD Tingkat Kabupaten', location: 'Aula Sindang Raya', bidang: 'Perencanaan', status: 'Dikonfirmasi', pic_name: 'Bpk. Ahmad', pic_phone: '081200000001', status_h1: false, status_h2: false },
-            { id: 2, date: '2026-03-10', time: '10:00', title: 'Rapat Paripurna LKPJ Bupati', location: 'Gedung DPRD', bidang: 'Semua Bidang', status: 'Selesai', pic_name: 'Ibu Rina', pic_phone: '081200000002', status_h1: true, status_h2: true },
-            { id: 3, date: '2026-03-12', time: '13:30', title: 'Evaluasi DAK Fisik Triwulan I', location: 'Ruang Rapat Bappeda', bidang: 'Fispra', status: 'Persiapan', pic_name: 'Bpk. Budi', pic_phone: '081200000003', status_h1: false, status_h2: false },
-            { id: 4, date: '2026-03-18', time: '08:30', title: 'Rapat Penanganan Stunting Terpadu', location: 'Kantor Bupati', bidang: 'Sosbud', status: 'Dikonfirmasi', pic_name: 'dr. Siti', pic_phone: '081200000004', status_h1: false, status_h2: false },
-        ];
-
-        function getAgendas() {
-            let data = localStorage.getItem('siap_agendas');
-            if (!data) {
-                localStorage.setItem('siap_agendas', JSON.stringify(DUMMY_DATA));
-                return DUMMY_DATA;
+        // ==========================================
+        // SIMULASI DATABASE GOOGLE SHEETS (FALLBACK)
+        // ==========================================
+        // Jika GAS_URL belum diisi, fungsi ini akan bertindak layaknya Google Sheets lokal
+        function simulateGoogleSheetsData() {
+            let lsAgendas = localStorage.getItem('gsheets_sim_agendas');
+            let lsUsers = localStorage.getItem('gsheets_sim_users');
+            
+            if(!lsAgendas) {
+                lsAgendas = JSON.stringify([
+                    { id: 1, date: '2026-03-15', time: '09:00', title: 'Musrenbang RKPD', location: 'Aula Sindang', bidang: 'Perencanaan', status: 'Dikonfirmasi', pic_name: 'Bpk. Ahmad', pic_phone: '081200000001', status_h1: false, status_h2: false }
+                ]);
+                localStorage.setItem('gsheets_sim_agendas', lsAgendas);
             }
-            return JSON.parse(data);
+            if(!lsUsers) {
+                lsUsers = JSON.stringify([
+                    { id: 1, username: 'admin', password: 'password', role: 'superadmin' }
+                ]);
+                localStorage.setItem('gsheets_sim_users', lsUsers);
+            }
+            return { agendas: JSON.parse(lsAgendas), users: JSON.parse(lsUsers) };
         }
 
-        // --- API & BOT WHATSAPP LOGIC ---
+        // FUNGSI UTAMA PENGAMBILAN DATA (API/SIMULASI)
+        async function fetchDatabase() {
+            if (GAS_URL) {
+                // Fetch asli ke Google Sheets (Apps Script) dengan pencegah cache
+                try {
+                    let response = await fetch(GAS_URL + "?action=getData&t=" + new Date().getTime());
+                    let json = await response.json();
+                    dbAgendas = json.agendas || [];
+                    dbUsers = json.users || [];
+                } catch(e) {
+                    console.error("Gagal terhubung ke Google Sheets:", e);
+                    Swal.fire('Database Error', 'Gagal memuat data dari Google Sheets.', 'error');
+                }
+            } else {
+                // Simulasi delay jaringan (500ms) agar terasa seperti fetch API sungguhan
+                await new Promise(r => setTimeout(r, 500)); 
+                let simData = simulateGoogleSheetsData();
+                dbAgendas = simData.agendas;
+                dbUsers = simData.users;
+            }
+        }
+
+        // FUNGSI UTAMA MENYIMPAN DATA (API/SIMULASI)
+        async function saveToDatabase(action, payload) {
+            // 1. Lakukan Update Data Lokal Terlebih Dahulu (Optimistic Update)
+            // Agar perubahan langsung tampil di tabel tanpa harus me-refresh halaman
+            if(action === 'saveAgenda') {
+                let idx = dbAgendas.findIndex(a => a.id === payload.id);
+                if(idx >= 0) dbAgendas[idx] = payload;
+                else dbAgendas.push(payload);
+            } else if(action === 'deleteAgenda') {
+                dbAgendas = dbAgendas.filter(a => a.id !== payload.id);
+            } else if(action === 'saveUser') {
+                let idx = dbUsers.findIndex(u => u.id === payload.id);
+                if(idx >= 0) dbUsers[idx] = payload;
+                else dbUsers.push(payload);
+            } else if(action === 'deleteUser') {
+                dbUsers = dbUsers.filter(u => u.id !== payload.id);
+            }
+
+            // 2. Kirim Data ke Server Cloud (Google Sheets) atau Local Storage
+            if (GAS_URL) {
+                try {
+                    let response = await fetch(GAS_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: action, data: payload })
+                    });
+                    return await response.json();
+                } catch(e) {
+                    console.error("Gagal menyimpan ke Google Sheets:", e);
+                    return { status: 'error' };
+                }
+            } else {
+                // Simulasi penyimpanan lokal
+                await new Promise(r => setTimeout(r, 400));
+                localStorage.setItem('gsheets_sim_agendas', JSON.stringify(dbAgendas));
+                localStorage.setItem('gsheets_sim_users', JSON.stringify(dbUsers));
+                return { status: 'success' };
+            }
+        }
+
+        // FUNGSI LOAD AWAL & REFRESH DATA
+        async function fetchDataFromServer(showLoading = true) {
+            if(showLoading) {
+                Swal.fire({ title: 'Sinkronisasi Data...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+            }
+            await fetchDatabase();
+            if(showLoading) Swal.close();
+            
+            renderPublicAgendas();
+            if(currentUser) {
+                renderAdminAgendas();
+                renderUsersTable();
+                updateDashboardStats();
+            }
+        }
+
+
+        // ==========================================
+        // LOGIKA AUTENTIKASI (LOGIN / LOGOUT)
+        // ==========================================
+        async function handleLogin(e) {
+            e.preventDefault();
+            const inputUser = document.getElementById('username').value.trim();
+            const inputPass = document.getElementById('password').value;
+
+            Swal.fire({ title: 'Otentikasi...', text: 'Memeriksa database...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+            
+            // Tarik data user terbaru dari server sebelum memvalidasi
+            await fetchDatabase();
+
+            const validUser = dbUsers.find(u => u.username === inputUser && u.password === inputPass);
+
+            if (validUser) {
+                currentUser = validUser;
+                document.getElementById('user-name').innerText = currentUser.username;
+                document.getElementById('welcome-name').innerText = currentUser.username;
+                document.getElementById('user-role').innerText = currentUser.role === 'superadmin' ? 'Super Admin' : 'Admin ' + currentUser.role;
+                document.getElementById('user-avatar').src = `https://ui-avatars.com/api/?name=${currentUser.username}&background=2563eb&color=fff`;
+
+                // Atur visibilitas menu berdasarkan role
+                if(currentUser.role === 'superadmin') {
+                    document.getElementById('menu-users-btn').style.display = 'flex';
+                } else {
+                    document.getElementById('menu-users-btn').style.display = 'none';
+                }
+
+                Swal.close();
+                switchMainView('app-view');
+            } else {
+                Swal.fire('Login Gagal', 'Username atau Password tidak ditemukan di database.', 'error');
+            }
+        }
+
+        function handleLogout() {
+            Swal.fire({
+                title: 'Keluar Sistem?',
+                text: "Sesi kerja Anda akan diakhiri.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e53e3e',
+                cancelButtonColor: '#cbd5e1',
+                confirmButtonText: 'Ya, Keluar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    currentUser = null;
+                    document.getElementById('login-form').reset();
+                    switchMainView('login-view');
+                }
+            })
+        }
+
+        // ==========================================
+        // MANAJEMEN PENGGUNA (CRUD)
+        // ==========================================
+        function renderUsersTable() {
+            const tbody = document.getElementById('admin-user-table');
+            tbody.innerHTML = '';
+            
+            dbUsers.forEach(u => {
+                const roleBadge = u.role === 'superadmin' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700';
+                const actionBtn = u.username === 'admin' && u.role === 'superadmin' 
+                    ? `<span class="text-xs text-gray-400 italic">Default</span>`
+                    : `<button onclick="deleteUser(${u.id})" class="text-red-500 hover:bg-red-50 p-2 rounded transition" title="Hapus User"><i class="fas fa-trash"></i></button>`;
+
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="p-4 font-medium text-gray-800"><i class="fas fa-user-circle text-gray-400 mr-2"></i> ${u.username}</td>
+                        <td class="p-4"><span class="${roleBadge} px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">${u.role}</span></td>
+                        <td class="p-4 text-right">${actionBtn}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function saveUser(e) {
+            e.preventDefault();
+            const payload = {
+                id: document.getElementById('user-id').value ? parseInt(document.getElementById('user-id').value) : Date.now(),
+                username: document.getElementById('user-username').value.trim(),
+                password: document.getElementById('user-password').value,
+                role: document.getElementById('user-role-select').value
+            };
+
+            Swal.fire({ title: 'Menyimpan ke Server...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+            await saveToDatabase('saveUser', payload);
+            Swal.fire({ icon: 'success', title: 'Tersimpan', text: 'Admin baru berhasil didaftarkan.', timer: 1500, showConfirmButton: false });
+            
+            closeModal('user-modal');
+            renderUsersTable();
+        }
+
+        function deleteUser(id) {
+            Swal.fire({
+                title: 'Hapus Akses?',
+                text: "User ini tidak akan bisa login lagi.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e53e3e',
+                confirmButtonText: 'Ya, Hapus'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({ title: 'Menghapus...', didOpen: () => { Swal.showLoading() } });
+                    await saveToDatabase('deleteUser', {id: id});
+                    Swal.fire('Terhapus!', 'Pengguna telah dihapus dari database.', 'success');
+                    renderUsersTable();
+                }
+            });
+        }
+
+        // ==========================================
+        // API & BOT WHATSAPP LOGIC
+        // ==========================================
         function formatPhone(phone) {
             if(!phone) return "";
-            phone = phone.replace(/[^\d+]/g, '');
+            phone = String(phone).replace(/[^\d+]/g, '');
             if (phone.startsWith('0')) return '+62' + phone.substring(1);
             if (phone.startsWith('62')) return '+' + phone;
             if (phone.startsWith('8')) return '+62' + phone;
@@ -587,143 +857,114 @@
         async function sendWhatsApp(phone, message, typeLog = "Manual") {
             const formattedPhone = formatPhone(phone);
             try {
-                const response = await fetch(API_URL, {
+                const response = await fetch(WA_API_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'X-Secret-Key': API_KEY
+                        'X-Secret-Key': WA_API_KEY
                     },
                     body: JSON.stringify({ phone: formattedPhone, message: message })
                 });
 
-                if(response.ok) {
-                    console.log(`[WA BOT - ${typeLog}] Berhasil mengirim ke ${formattedPhone}`);
-                    return true;
-                } else {
-                    console.error(`[WA BOT Error] Gagal kirim WA HTTP: ${response.status}`);
-                    return false;
-                }
+                if(response.ok) return true;
+                return false;
             } catch (error) {
-                console.error(`[WA BOT Network Error]`, error);
                 return false;
             }
         }
 
         function startReminderBot() {
             if(reminderInterval) clearInterval(reminderInterval);
-            // Mengecek setiap 1 menit (60000 ms) saat dashboard terbuka
             reminderInterval = setInterval(checkAndSendReminders, 60000); 
             document.getElementById('wa-bot-indicator').classList.add('animate-pulse');
             document.getElementById('wa-bot-indicator').classList.replace('bg-gray-400', 'bg-green-500');
-            console.log("[BOT WA] Aktif memantau jadwal...");
-            checkAndSendReminders(); // Pengecekan pertama saat login
+            checkAndSendReminders(); 
         }
 
         function stopReminderBot() {
             if(reminderInterval) clearInterval(reminderInterval);
             document.getElementById('wa-bot-indicator').classList.remove('animate-pulse');
             document.getElementById('wa-bot-indicator').classList.replace('bg-green-500', 'bg-gray-400');
-            console.log("[BOT WA] Nonaktif.");
         }
 
         function forceCheckReminders() {
-            Swal.fire({
-                title: 'Mengecek Jadwal & Notifikasi...',
-                text: 'Sistem sedang memindai seluruh jadwal untuk mencari agenda H-1 & 2 Jam.',
-                icon: 'info',
-                timer: 2000,
-                showConfirmButton: false
-            });
+            Swal.fire({ title: 'Mengecek Jadwal...', text: 'Sistem memindai jadwal untuk H-1 & 2 Jam.', icon: 'info', timer: 2000, showConfirmButton: false });
             checkAndSendReminders();
         }
 
         async function checkAndSendReminders() {
-            let agendas = getAgendas();
             const now = new Date();
-            let needsUpdate = false;
+            let needsDbUpdate = false;
 
-            for (let i = 0; i < agendas.length; i++) {
-                let ag = agendas[i];
-                if (ag.status === 'Selesai' || ag.status === 'Ditunda') continue; // Jangan kirim kalau batal/selesai
-                if (!ag.pic_phone) continue; // Jangan kirim kalau tidak ada nomor
+            for (let i = 0; i < dbAgendas.length; i++) {
+                let ag = dbAgendas[i];
+                if (ag.status === 'Selesai' || ag.status === 'Ditunda' || !ag.pic_phone) continue;
 
                 const agendaDateTime = new Date(`${ag.date}T${ag.time}`);
                 const diffMs = agendaDateTime - now;
                 const diffHours = diffMs / (1000 * 60 * 60);
 
-                if (diffHours < 0) continue; // Acara sudah lewat
+                if (diffHours < 0) continue; 
 
-                // H-1 Check (24 s/d 2 Jam sebelum)
+                // H-1 Check
                 if (diffHours <= 24 && diffHours > 2 && !ag.status_h1) {
                     const msg = `*PENGINGAT (H-1) AGENDA BAPPEDA*\n\nHalo *${ag.pic_name}*,\nMengingatkan bahwa agenda *"${ag.title}"* akan dilaksanakan BESOK pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${ag.time} WIB\n📍 Lokasi: ${ag.location}\n🏢 Bidang: ${ag.bidang}\n\nMohon pastikan persiapan selesai. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
-                    let success = await sendWhatsApp(ag.pic_phone, msg, "Otomatis H-1");
-                    if(success) {
-                        agendas[i].status_h1 = true;
-                        needsUpdate = true;
+                    if(await sendWhatsApp(ag.pic_phone, msg, "Otomatis H-1")) {
+                        dbAgendas[i].status_h1 = true;
+                        needsDbUpdate = true;
+                        await saveToDatabase('saveAgenda', dbAgendas[i]); // Simpan satu per satu ke DB
                     }
                 }
 
-                // H-2 Jam Check (2 Jam s/d 0 Jam sebelum)
+                // H-2 Jam Check
                 if (diffHours <= 2 && diffHours > 0 && !ag.status_h2) {
                     const msg = `*PENGINGAT MENDESAK (2 JAM) BAPPEDA*\n\nHalo *${ag.pic_name}*,\nAgenda *"${ag.title}"* akan dimulai DALAM WAKTU DEKAT pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${ag.time} WIB\n📍 Lokasi: ${ag.location}\n\nMohon standby. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
-                    let success = await sendWhatsApp(ag.pic_phone, msg, "Otomatis 2 Jam");
-                    if(success) {
-                        agendas[i].status_h2 = true;
-                        needsUpdate = true;
+                    if(await sendWhatsApp(ag.pic_phone, msg, "Otomatis 2 Jam")) {
+                        dbAgendas[i].status_h2 = true;
+                        needsDbUpdate = true;
+                        await saveToDatabase('saveAgenda', dbAgendas[i]);
                     }
                 }
             }
 
-            if(needsUpdate) {
-                localStorage.setItem('siap_agendas', JSON.stringify(agendas));
-                if(!document.getElementById('content-menu-agenda').classList.contains('hidden')){
-                    renderAdminAgendas(); // Refresh tabel jika sedang dibuka
-                }
+            if(needsDbUpdate && !document.getElementById('content-menu-agenda').classList.contains('hidden')) {
+                renderAdminAgendas(); 
             }
         }
 
         async function testManualWA(id) {
-            const ag = getAgendas().find(a => a.id === id);
+            const ag = dbAgendas.find(a => a.id === id);
             if(!ag || !ag.pic_phone) return Swal.fire('Error', 'Nomor WA tidak tersedia', 'error');
 
-            Swal.fire({
-                title: 'Mengirim Pesan...',
-                text: 'Harap tunggu.',
-                allowOutsideClick: false,
-                didOpen: () => { Swal.showLoading() }
-            });
-
+            Swal.fire({ title: 'Mengirim Pesan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
             const msg = `*INFO AGENDA PIMPINAN*\n\nHalo *${ag.pic_name}*,\nIni adalah tes pesan dari Sistem SIAP BAPPEDA untuk agenda:\n*"${ag.title}"*\n\nTerima kasih.`;
-            const isSuccess = await sendWhatsApp(ag.pic_phone, msg, "Tes Manual");
-
-            if(isSuccess) {
+            
+            if(await sendWhatsApp(ag.pic_phone, msg, "Tes Manual")) {
                 Swal.fire('Berhasil!', `Pesan uji coba terkirim ke ${ag.pic_phone}`, 'success');
             } else {
-                Swal.fire('Gagal!', 'Terjadi kesalahan jaringan atau API Key tidak valid. (Cek CORS Console)', 'error');
+                Swal.fire('Gagal!', 'Terjadi kesalahan jaringan atau API Key WA tidak valid.', 'error');
             }
         }
 
-        // --- VIEW MANAGEMENT (FIXED OVERLAPPING) ---
+        // ==========================================
+        // VIEW MANAGEMENT & RENDER LOGIC
+        // ==========================================
         function switchMainView(viewId) {
-            const views = ['public-view', 'login-view', 'app-view'];
-            views.forEach(id => {
+            ['public-view', 'login-view', 'app-view'].forEach(id => {
                 const el = document.getElementById(id);
-                el.classList.add('hidden');
-                el.classList.remove('flex');
+                el.classList.add('hidden'); el.classList.remove('flex');
             });
             
             const target = document.getElementById(viewId);
-            target.classList.remove('hidden');
-            target.classList.add('flex');
+            target.classList.remove('hidden'); target.classList.add('flex');
             
             if (viewId === 'public-view') {
-                stopReminderBot(); // Matikan WA bot jika di halaman publik
-                renderPublicAgendas();
+                stopReminderBot();
+                fetchDataFromServer(false); // background fetch for public view
             } else if (viewId === 'app-view') {
-                updateDashboardStats();
-                renderAdminAgendas();
-                startReminderBot(); // Nyalakan WA bot saat login & dashboard terbuka
+                fetchDataFromServer(true);
+                startReminderBot();
             } else if (viewId === 'login-view') {
                 stopReminderBot();
             }
@@ -738,8 +979,7 @@
             btnElement.classList.remove('text-gray-600');
 
             document.querySelectorAll('.menu-content').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('block');
+                el.classList.add('hidden'); el.classList.remove('block');
             });
             document.getElementById('content-' + menuId).classList.remove('hidden');
             document.getElementById('content-' + menuId).classList.add('block');
@@ -748,10 +988,9 @@
 
             if (menuId === 'menu-dashboard') updateDashboardStats();
             if (menuId === 'menu-agenda') renderAdminAgendas();
+            if (menuId === 'menu-users') renderUsersTable();
 
-            if (window.innerWidth < 768) {
-                toggleMobileMenu();
-            }
+            if (window.innerWidth < 768) toggleMobileMenu();
         }
 
         function toggleMobileMenu() {
@@ -766,47 +1005,10 @@
                 sidebar.classList.add('-translate-x-full');
                 sidebar.classList.remove('translate-x-0');
                 backdrop.classList.add('hidden');
-                
-                setTimeout(() => {
-                    sidebar.classList.add('hidden');
-                    sidebar.classList.remove('flex');
-                }, 300);
+                setTimeout(() => { sidebar.classList.add('hidden'); sidebar.classList.remove('flex'); }, 300);
             }
         }
 
-        // --- LOGIN LOGIC ---
-        function handleLogin(e) {
-            e.preventDefault();
-            const roleSelect = document.getElementById('role');
-            const role = roleSelect.options[roleSelect.selectedIndex].text;
-            const user = document.getElementById('username').value;
-            
-            document.getElementById('user-name').innerText = user;
-            document.getElementById('welcome-name').innerText = user;
-            document.getElementById('user-role').innerText = role;
-            document.getElementById('user-avatar').src = `https://ui-avatars.com/api/?name=${user.replace(' ', '+')}&background=2563eb&color=fff`;
-
-            switchMainView('app-view');
-        }
-
-        function handleLogout() {
-            Swal.fire({
-                title: 'Keluar Sistem?',
-                text: "Sesi kerja Anda akan diakhiri.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e53e3e',
-                cancelButtonColor: '#cbd5e1',
-                confirmButtonText: 'Ya, Keluar',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    switchMainView('login-view');
-                }
-            })
-        }
-
-        // --- RENDER LOGIC ---
         function getStatusConfig(status) {
             switch(status) {
                 case 'Selesai': return { bg: 'bg-green-100', text: 'text-green-800', icon: 'fa-check-circle' };
@@ -818,24 +1020,17 @@
         }
 
         function formatDate(dateStr) {
-            const options = { day: 'numeric', month: 'short', year: 'numeric' };
-            return new Date(dateStr).toLocaleDateString('id-ID', options);
+            return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
         }
 
         function renderPublicAgendas() {
             const container = document.getElementById('public-agenda-container');
-            const search = document.getElementById('public-search').value.toLowerCase();
-            let agendas = getAgendas();
+            const search = document.getElementById('public-search') ? document.getElementById('public-search').value.toLowerCase() : '';
 
-            let filtered = agendas.filter(a => 
-                (a.title.toLowerCase().includes(search) || a.location.toLowerCase().includes(search))
-            );
-            
-            // Urutkan jadwal yang terdekat
+            let filtered = dbAgendas.filter(a => (a.title.toLowerCase().includes(search) || a.location.toLowerCase().includes(search)));
             filtered.sort((a,b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
 
             container.innerHTML = '';
-            
             if (filtered.length === 0) {
                 container.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500">Tidak ada agenda yang ditemukan.</div>`;
                 return;
@@ -843,7 +1038,7 @@
 
             filtered.forEach(ag => {
                 const s = getStatusConfig(ag.status);
-                const html = `
+                container.innerHTML += `
                     <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition border border-gray-100 overflow-hidden flex flex-col h-full relative group">
                         <div class="h-2 w-full ${s.bg.replace('100', '500')}"></div>
                         <div class="p-5 flex-1 flex flex-col">
@@ -858,22 +1053,19 @@
                                 <div class="flex items-start"><i class="fas fa-map-marker-alt w-5 text-brand-500 mt-0.5"></i> <span>${ag.location}</span></div>
                             </div>
                         </div>
-                    </div>
-                `;
-                container.innerHTML += html;
+                    </div>`;
             });
         }
 
         function renderAdminAgendas() {
             const tbody = document.getElementById('admin-agenda-table');
             const search = document.getElementById('admin-search').value.toLowerCase();
-            let agendas = getAgendas();
-
-            let filtered = agendas.filter(a => a.title.toLowerCase().includes(search));
-            filtered.sort((a,b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`)); // Descending for admin
+            
+            // Filter berdasarkan role (Jika bukan superadmin, hanya lihat bidangknya saja, opsional. Saat ini semua bisa lihat)
+            let filtered = dbAgendas.filter(a => a.title.toLowerCase().includes(search));
+            filtered.sort((a,b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`)); 
 
             tbody.innerHTML = '';
-
             if (filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">Belum ada data agenda.</td></tr>`;
                 return;
@@ -881,20 +1073,23 @@
 
             filtered.forEach(ag => {
                 const s = getStatusConfig(ag.status);
-                
-                // WA Badge Styles
                 const badgeH1 = ag.status_h1 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400';
                 const badgeH2 = ag.status_h2 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400';
 
-                const html = `
+                // Hanya superadmin atau admin bidang terkait yang boleh edit (contoh logika akses)
+                const canEdit = currentUser.role === 'superadmin' || currentUser.role === ag.bidang;
+                const actionBtns = canEdit ? `
+                    <button onclick="editAgenda(${ag.id})" class="text-brand-500 hover:bg-brand-50 p-2 rounded transition" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button onclick="deleteAgenda(${ag.id})" class="text-red-500 hover:bg-red-50 p-2 rounded transition" title="Hapus"><i class="fas fa-trash"></i></button>
+                ` : `<span class="text-xs text-gray-400 italic">No Access</span>`;
+
+                tbody.innerHTML += `
                     <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
                         <td class="p-4">
                             <div class="font-bold text-gray-800">${formatDate(ag.date)}</div>
                             <div class="text-[11px] sm:text-xs text-gray-500">${ag.time} WIB</div>
                         </td>
-                        <td class="p-4">
-                            <div class="font-medium text-brand-700 leading-tight">${ag.title}</div>
-                        </td>
+                        <td class="p-4"><div class="font-medium text-brand-700 leading-tight">${ag.title}</div></td>
                         <td class="p-4 text-gray-600 text-xs sm:text-sm">
                             <div class="flex items-start"><i class="fas fa-map-marker-alt text-red-400 mr-2 mt-0.5 w-3"></i> ${ag.location}</div>
                             <div class="flex items-center mt-1 text-gray-400"><i class="fas fa-tag mr-2 w-3"></i> ${ag.bidang}</div>
@@ -912,28 +1107,25 @@
                         </td>
                         <td class="p-4 text-right whitespace-nowrap">
                             <button onclick="testManualWA(${ag.id})" class="text-green-500 hover:bg-green-50 p-2 rounded transition" title="Test WA PIC"><i class="fab fa-whatsapp"></i></button>
-                            <button onclick="editAgenda(${ag.id})" class="text-brand-500 hover:bg-brand-50 p-2 rounded transition" title="Edit"><i class="fas fa-edit"></i></button>
-                            <button onclick="deleteAgenda(${ag.id})" class="text-red-500 hover:bg-red-50 p-2 rounded transition" title="Hapus"><i class="fas fa-trash"></i></button>
+                            ${actionBtns}
                         </td>
                     </tr>
                 `;
-                tbody.innerHTML += html;
             });
         }
 
-        // --- CRUD LOGIC ---
+        // ==========================================
+        // AGENDA CRUD & MODAL
+        // ==========================================
         function openModal(id = null) {
             const modal = document.getElementById('agenda-modal');
             const content = document.getElementById('modal-content');
-            
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            content.classList.remove('modal-leave');
-            content.classList.add('modal-enter');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            content.classList.remove('modal-leave'); content.classList.add('modal-enter');
 
             if (id) {
                 document.getElementById('modal-title').innerText = "Edit Agenda";
-                const ag = getAgendas().find(a => a.id === id);
+                const ag = dbAgendas.find(a => a.id === id);
                 document.getElementById('agenda-id').value = ag.id;
                 document.getElementById('agenda-title').value = ag.title;
                 document.getElementById('agenda-date').value = ag.date;
@@ -947,28 +1139,35 @@
                 document.getElementById('modal-title').innerText = "Tambah Agenda Baru";
                 document.getElementById('agenda-form').reset();
                 document.getElementById('agenda-id').value = '';
+                
+                // Auto-select bidang berdasarkan login user
+                if(currentUser && currentUser.role !== 'superadmin') {
+                    document.getElementById('agenda-bidang').value = currentUser.role;
+                }
             }
         }
 
-        function closeModal() {
-            const modal = document.getElementById('agenda-modal');
-            const content = document.getElementById('modal-content');
-            
-            content.classList.remove('modal-enter');
-            content.classList.add('modal-leave');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }, 300);
+        function openUserModal() {
+            const modal = document.getElementById('user-modal');
+            const content = document.getElementById('user-modal-content');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            content.classList.remove('modal-leave'); content.classList.add('modal-enter');
+            document.getElementById('user-form').reset();
+            document.getElementById('user-id').value = '';
         }
 
-        function saveAgenda(e) {
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const content = document.getElementById(modalId === 'agenda-modal' ? 'modal-content' : 'user-modal-content');
+            content.classList.remove('modal-enter'); content.classList.add('modal-leave');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        }
+
+        async function saveAgenda(e) {
             e.preventDefault();
-            let agendas = getAgendas();
             const idVal = document.getElementById('agenda-id').value;
             
-            const newAgenda = {
+            const payload = {
                 id: idVal ? parseInt(idVal) : Date.now(),
                 title: document.getElementById('agenda-title').value,
                 date: document.getElementById('agenda-date').value,
@@ -978,62 +1177,48 @@
                 status: document.getElementById('agenda-status').value,
                 pic_name: document.getElementById('agenda-pic-name').value,
                 pic_phone: document.getElementById('agenda-pic-phone').value,
-                status_h1: false, // Reset saat disimpan/diedit
+                status_h1: false, // Reset saat dirubah agar dikirim ulang jika jadwal ganti
                 status_h2: false
             };
 
-            if (idVal) {
-                const index = agendas.findIndex(a => a.id === parseInt(idVal));
-                // Pertahankan status WA sebelumnya jika hanya mengedit lokasi/waktu kecil (Opsional)
-                // Di sini kita reset saja agar jika waktu berubah, notifikasi terkirim ulang
-                agendas[index] = newAgenda; 
-                Swal.fire({ icon: 'success', title: 'Tersimpan', text: 'Agenda & Pengaturan WA berhasil diubah!', timer: 1500, showConfirmButton: false });
-            } else {
-                agendas.push(newAgenda);
-                Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Agenda baru ditambahkan!', timer: 1500, showConfirmButton: false });
-            }
-
-            localStorage.setItem('siap_agendas', JSON.stringify(agendas));
-            closeModal();
+            Swal.fire({ title: 'Menyimpan ke Server...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+            
+            await saveToDatabase('saveAgenda', payload);
+            Swal.fire({ icon: 'success', title: 'Tersimpan', text: 'Data berhasil disinkronkan!', timer: 1500, showConfirmButton: false });
+            
+            closeModal('agenda-modal');
             renderAdminAgendas();
             updateDashboardStats();
         }
 
         function deleteAgenda(id) {
             Swal.fire({
-                title: 'Hapus Agenda?',
-                text: "Data yang dihapus tidak dapat dikembalikan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e53e3e',
-                cancelButtonColor: '#cbd5e1',
-                confirmButtonText: 'Ya, Hapus'
-            }).then((result) => {
+                title: 'Hapus Agenda?', text: "Data di Cloud juga akan ikut terhapus!", icon: 'warning',
+                showCancelButton: true, confirmButtonColor: '#e53e3e', confirmButtonText: 'Ya, Hapus'
+            }).then(async (result) => {
                 if (result.isConfirmed) {
-                    let agendas = getAgendas().filter(a => a.id !== id);
-                    localStorage.setItem('siap_agendas', JSON.stringify(agendas));
+                    Swal.fire({ title: 'Menghapus...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+                    await saveToDatabase('deleteAgenda', { id: id });
+                    Swal.fire('Terhapus!', 'Agenda telah dihapus dari sistem.', 'success');
                     renderAdminAgendas();
                     updateDashboardStats();
-                    Swal.fire('Terhapus!', 'Agenda telah dihapus.', 'success');
                 }
             })
         }
 
-        function editAgenda(id) {
-            openModal(id);
-        }
+        function editAgenda(id) { openModal(id); }
 
-        // --- DASHBOARD CHARTS & STATS ---
+        // ==========================================
+        // CHARTS & STATS
+        // ==========================================
         let donutChart, barChart;
         Chart.defaults.font.family = "'Inter', sans-serif";
 
         function updateDashboardStats() {
-            const agendas = getAgendas();
-            
-            const total = agendas.length;
-            const selesai = agendas.filter(a => a.status === 'Selesai').length;
-            const mendatang = agendas.filter(a => a.status === 'Dikonfirmasi' || a.status === 'Persiapan').length;
-            const batal = agendas.filter(a => a.status === 'Ditunda').length;
+            const total = dbAgendas.length;
+            const selesai = dbAgendas.filter(a => a.status === 'Selesai').length;
+            const mendatang = dbAgendas.filter(a => a.status === 'Dikonfirmasi' || a.status === 'Persiapan').length;
+            const batal = dbAgendas.filter(a => a.status === 'Ditunda').length;
 
             document.getElementById('stat-total').innerText = total;
             document.getElementById('stat-selesai').innerText = selesai;
@@ -1042,7 +1227,6 @@
 
             const ctxDElement = document.getElementById('donutChart');
             const ctxBElement = document.getElementById('barChart');
-            
             if (!ctxDElement || !ctxBElement) return;
 
             setTimeout(() => {
@@ -1051,50 +1235,31 @@
                     type: 'doughnut',
                     data: {
                         labels: ['Selesai', 'Dikonfirmasi/Persiapan', 'Batal/Ditunda'],
-                        datasets: [{
-                            data: [selesai, mendatang, batal],
-                            backgroundColor: ['#10b981', '#3b82f6', '#ef4444'],
-                            borderWidth: 0,
-                            hoverOffset: 4
-                        }]
+                        datasets: [{ data: [selesai, mendatang, batal], backgroundColor: ['#10b981', '#3b82f6', '#ef4444'], borderWidth: 0, hoverOffset: 4 }]
                     },
-                    options: { 
-                        responsive: true, 
-                        maintainAspectRatio: false, 
-                        cutout: '75%', 
-                        plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } } 
-                    }
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } } }
                 });
 
                 const bidangCounts = { 'Perencanaan': 0, 'Fispra': 0, 'Ekonomi': 0, 'Sosbud': 0, 'Semua Bidang': 0 };
-                agendas.forEach(a => { if(bidangCounts[a.bidang] !== undefined) bidangCounts[a.bidang]++; });
+                dbAgendas.forEach(a => { if(bidangCounts[a.bidang] !== undefined) bidangCounts[a.bidang]++; });
 
                 if(barChart) barChart.destroy();
                 barChart = new Chart(ctxBElement, {
                     type: 'bar',
                     data: {
                         labels: Object.keys(bidangCounts),
-                        datasets: [{
-                            label: 'Jumlah Agenda',
-                            data: Object.values(bidangCounts),
-                            backgroundColor: '#2563eb',
-                            borderRadius: 4
-                        }]
+                        datasets: [{ label: 'Jumlah Agenda', data: Object.values(bidangCounts), backgroundColor: '#2563eb', borderRadius: 4 }]
                     },
-                    options: { 
-                        responsive: true, 
-                        maintainAspectRatio: false,
-                        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
-                        plugins: { legend: { display: false } }
-                    }
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }, plugins: { legend: { display: false } } }
                 });
             }, 100);
         }
 
         // --- INIT ---
-        window.onload = () => {
-            getAgendas(); // Ensure local storage has initial data
-            switchMainView('public-view'); // Start at public view
+        window.onload = async () => {
+            // Kita jalankan fetch pertama kali sebagai guest
+            await fetchDataFromServer(false); 
+            switchMainView('public-view'); 
         };
     </script>
 </body>
