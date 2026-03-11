@@ -734,8 +734,8 @@
             
             const now = new Date();
             // Ambil 5 agenda mendesak yang belum lewat dan belum selesai/batal
-            const upcoming = dbAgendas.filter(a => new Date(`${a.date}T${a.time}`) >= now && a.status !== 'Ditunda' && a.status !== 'Selesai')
-                                      .sort((a,b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`))
+            const upcoming = dbAgendas.filter(a => new Date(`${getRawDate(a.date)}T${formatTime(a.time)}`) >= now && a.status !== 'Ditunda' && a.status !== 'Selesai')
+                                      .sort((a,b) => new Date(`${getRawDate(a.date)}T${formatTime(a.time)}`) - new Date(`${getRawDate(b.date)}T${formatTime(b.time)}`))
                                       .slice(0, 5);
 
             if (upcoming.length === 0) {
@@ -745,7 +745,7 @@
 
             let tickerHTML = '';
             upcoming.forEach(ag => {
-                tickerHTML += `<span class="mx-4">• <span class="text-yellow-300">INFO AGENDA:</span> ${ag.title} akan dilaksanakan pada ${formatDate(ag.date)} Pukul ${ag.time} WIB bertempat di ${ag.location}</span>`;
+                tickerHTML += `<span class="mx-4">• <span class="text-yellow-300">INFO AGENDA:</span> ${ag.title} akan dilaksanakan pada ${formatDate(ag.date)} Pukul ${formatTime(ag.time)} WIB bertempat di ${ag.location}</span>`;
             });
             tickerContainer.innerHTML = tickerHTML;
         }
@@ -922,7 +922,7 @@
                 let ag = dbAgendas[i];
                 if (ag.status === 'Selesai' || ag.status === 'Ditunda' || !ag.pic_phone) continue;
 
-                const agendaDateTime = new Date(`${ag.date}T${ag.time}`);
+                const agendaDateTime = new Date(`${getRawDate(ag.date)}T${formatTime(ag.time)}`);
                 const diffMs = agendaDateTime - now;
                 const diffHours = diffMs / (1000 * 60 * 60);
 
@@ -930,7 +930,7 @@
 
                 // H-1 Check
                 if (diffHours <= 24 && diffHours > 2 && !ag.status_h1) {
-                    const msg = `*PENGINGAT (H-1) AGENDA BAPPEDA*\n\nHalo *${ag.pic_name}*,\nMengingatkan bahwa agenda *"${ag.title}"* akan dilaksanakan BESOK pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${ag.time} WIB\n📍 Lokasi: ${ag.location}\n🏢 Bidang: ${ag.bidang}\n\nMohon pastikan persiapan selesai. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
+                    const msg = `*PENGINGAT (H-1) AGENDA BAPPEDA*\n\nHalo *${ag.pic_name}*,\nMengingatkan bahwa agenda *"${ag.title}"* akan dilaksanakan BESOK pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${formatTime(ag.time)} WIB\n📍 Lokasi: ${ag.location}\n🏢 Bidang: ${ag.bidang}\n\nMohon pastikan persiapan selesai. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
                     if(await sendWhatsApp(ag.pic_phone, msg, "Otomatis H-1")) {
                         dbAgendas[i].status_h1 = true;
                         needsDbUpdate = true;
@@ -940,7 +940,7 @@
 
                 // H-2 Jam Check
                 if (diffHours <= 2 && diffHours > 0 && !ag.status_h2) {
-                    const msg = `*PENGINGAT MENDESAK (2 JAM) BAPPEDA*\n\nHalo *${ag.pic_name}*,\nAgenda *"${ag.title}"* akan dimulai DALAM WAKTU DEKAT pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${ag.time} WIB\n📍 Lokasi: ${ag.location}\n\nMohon standby. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
+                    const msg = `*PENGINGAT MENDESAK (2 JAM) BAPPEDA*\n\nHalo *${ag.pic_name}*,\nAgenda *"${ag.title}"* akan dimulai DALAM WAKTU DEKAT pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${formatTime(ag.time)} WIB\n📍 Lokasi: ${ag.location}\n\nMohon standby. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
                     if(await sendWhatsApp(ag.pic_phone, msg, "Otomatis 2 Jam")) {
                         dbAgendas[i].status_h2 = true;
                         needsDbUpdate = true;
@@ -959,7 +959,7 @@
             if(!ag || !ag.pic_phone) return Swal.fire('Error', 'Nomor WA tidak tersedia', 'error');
 
             Swal.fire({ title: 'Mengirim Pesan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
-            const msg = `*INFORMASI AGENDA BAPPEDA*\n\nHalo *${ag.pic_name}*,\nBerikut adalah detail kegiatan yang ditugaskan kepada Anda:\n\n📌 *Agenda*: ${ag.title}\n📅 *Tgl*: ${formatDate(ag.date)}\n⏰ *Waktu*: ${ag.time} WIB\n📍 *Lokasi*: ${ag.location}\n🏢 *Bidang*: ${ag.bidang}\n\nMohon dipersiapkan dengan baik. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
+            const msg = `*INFORMASI AGENDA BAPPEDA*\n\nHalo *${ag.pic_name}*,\nBerikut adalah detail kegiatan yang ditugaskan kepada Anda:\n\n📌 *Agenda*: ${ag.title}\n📅 *Tgl*: ${formatDate(ag.date)}\n⏰ *Waktu*: ${formatTime(ag.time)} WIB\n📍 *Lokasi*: ${ag.location}\n🏢 *Bidang*: ${ag.bidang}\n\nMohon dipersiapkan dengan baik. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
             
             if(await sendWhatsApp(ag.pic_phone, msg, "Kirim Manual")) {
                 Swal.fire('Berhasil!', `Informasi agenda terkirim ke ${ag.pic_phone}`, 'success');
@@ -1052,12 +1052,38 @@
             return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
         }
 
+        function getRawDate(dateStr) {
+            if (!dateStr) return "";
+            if (typeof dateStr === 'string' && dateStr.includes('T')) {
+                return dateStr.split('T')[0];
+            }
+            return dateStr;
+        }
+
+        function formatTime(timeStr) {
+            if (!timeStr) return "00:00";
+            if (typeof timeStr === 'string') {
+                if (timeStr.includes('T')) {
+                    try {
+                        const d = new Date(timeStr);
+                        let hours = d.getHours().toString().padStart(2, '0');
+                        let minutes = d.getMinutes().toString().padStart(2, '0');
+                        return `${hours}:${minutes}`;
+                    } catch (e) {
+                        return "00:00";
+                    }
+                }
+                return timeStr.substring(0, 5);
+            }
+            return "00:00";
+        }
+
         function renderPublicAgendas() {
             const container = document.getElementById('public-agenda-container');
             const search = document.getElementById('public-search') ? document.getElementById('public-search').value.toLowerCase() : '';
 
             let filtered = dbAgendas.filter(a => (a.title.toLowerCase().includes(search) || a.location.toLowerCase().includes(search)));
-            filtered.sort((a,b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
+            filtered.sort((a,b) => new Date(`${getRawDate(a.date)}T${formatTime(a.time)}`) - new Date(`${getRawDate(b.date)}T${formatTime(b.time)}`));
 
             container.innerHTML = '';
             if (filtered.length === 0) {
@@ -1078,7 +1104,7 @@
                             <h3 class="text-base sm:text-lg font-bold text-gray-900 mb-2 leading-tight">${ag.title}</h3>
                             <div class="mt-auto space-y-2 text-xs sm:text-sm text-gray-600 pt-3 border-t border-gray-50">
                                 <div class="flex items-center"><i class="far fa-calendar-alt w-5 text-brand-500"></i> ${formatDate(ag.date)}</div>
-                                <div class="flex items-center"><i class="far fa-clock w-5 text-brand-500"></i> ${ag.time} WIB</div>
+                                <div class="flex items-center"><i class="far fa-clock w-5 text-brand-500"></i> ${formatTime(ag.time)} WIB</div>
                                 <div class="flex items-start"><i class="fas fa-map-marker-alt w-5 text-brand-500 mt-0.5"></i> <span>${ag.location}</span></div>
                             </div>
                         </div>
@@ -1092,7 +1118,7 @@
             
             // Filter berdasarkan role (Jika bukan superadmin, hanya lihat bidangknya saja, opsional. Saat ini semua bisa lihat)
             let filtered = dbAgendas.filter(a => a.title.toLowerCase().includes(search));
-            filtered.sort((a,b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`)); 
+            filtered.sort((a,b) => new Date(`${getRawDate(b.date)}T${formatTime(b.time)}`) - new Date(`${getRawDate(a.date)}T${formatTime(a.time)}`)); 
 
             tbody.innerHTML = '';
             if (filtered.length === 0) {
@@ -1116,7 +1142,7 @@
                     <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
                         <td class="p-4">
                             <div class="font-bold text-gray-800">${formatDate(ag.date)}</div>
-                            <div class="text-[11px] sm:text-xs text-gray-500">${ag.time} WIB</div>
+                            <div class="text-[11px] sm:text-xs text-gray-500">${formatTime(ag.time)} WIB</div>
                         </td>
                         <td class="p-4"><div class="font-medium text-brand-700 leading-tight">${ag.title}</div></td>
                         <td class="p-4 text-gray-600 text-xs sm:text-sm">
@@ -1157,8 +1183,8 @@
                 const ag = dbAgendas.find(a => a.id === id);
                 document.getElementById('agenda-id').value = ag.id;
                 document.getElementById('agenda-title').value = ag.title;
-                document.getElementById('agenda-date').value = ag.date;
-                document.getElementById('agenda-time').value = ag.time;
+                document.getElementById('agenda-date').value = getRawDate(ag.date);
+                document.getElementById('agenda-time').value = formatTime(ag.time);
                 document.getElementById('agenda-location').value = ag.location;
                 document.getElementById('agenda-bidang').value = ag.bidang;
                 document.getElementById('agenda-status').value = ag.status;
