@@ -267,7 +267,7 @@
                         <i class="fas fa-users-cog w-6 text-center mr-2"></i>
                         <span class="text-sm">Manajemen Pengguna</span>
                     </a>
-                    <a href="#" onclick="switchMenu('menu-placeholder', this)" class="menu-btn flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    <a href="#" onclick="switchMenu('menu-notulensi', this)" class="menu-btn flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
                         <i class="fas fa-file-alt w-6 text-center mr-2"></i>
                         <span class="text-sm">Notulensi Laporan</span>
                     </a>
@@ -436,7 +436,7 @@
                     </div>
                 </div>
 
-                <!-- CONTENT 3: MANAJEMEN PENGGUNA (ADMIN BDB) -->
+                <!-- CONTENT 3: MANAJEMEN PENGGUNA (ADMIN BIDANG) -->
                 <div id="content-menu-users" class="menu-content hidden">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
                         <div class="p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50">
@@ -467,12 +467,34 @@
                     </div>
                 </div>
 
-                <!-- CONTENT 4: PLACEHOLDER -->
-                <div id="content-menu-placeholder" class="menu-content hidden h-full flex flex-col items-center justify-center min-h-[50vh]">
-                    <div class="text-center px-4">
-                        <img src="https://cdn-icons-png.flaticon.com/512/2748/2748558.png" alt="Under Construction" class="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 opacity-50">
-                        <h2 class="text-xl sm:text-2xl font-bold text-gray-700">Fitur Sedang Dikembangkan</h2>
-                        <p class="text-gray-500 mt-2 text-sm sm:text-base">Halaman ini masih dalam tahap perancangan antarmuka.</p>
+                <!-- CONTENT 4: NOTULENSI LAPORAN -->
+                <div id="content-menu-notulensi" class="menu-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+                        <div class="p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50">
+                            <div>
+                                <h2 class="text-lg font-bold text-gray-800">Notulensi & Laporan Kegiatan</h2>
+                                <p class="text-xs text-gray-500 mt-1">Kelola arsip catatan rapat dan dokumentasi acara</p>
+                            </div>
+                            <div class="flex gap-2 w-full sm:w-auto">
+                                <input type="text" id="notulensi-search" onkeyup="renderNotulensiTable()" placeholder="Cari kegiatan..." class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 w-full sm:w-64">
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto w-full">
+                            <table class="w-full text-left border-collapse min-w-[800px]">
+                                <thead>
+                                    <tr class="bg-white border-b border-gray-200 text-xs uppercase text-gray-500 font-semibold tracking-wider">
+                                        <th class="p-4 w-1/6">Tgl Pelaksanaan</th>
+                                        <th class="p-4 w-1/3">Nama Kegiatan & Bidang</th>
+                                        <th class="p-4 text-center w-1/6">Status Agenda</th>
+                                        <th class="p-4 text-center w-1/6">Status Laporan</th>
+                                        <th class="p-4 text-right w-1/6">Aksi Laporan</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm" id="notulensi-table">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -517,10 +539,12 @@
                             <label class="block text-gray-700 text-sm font-bold mb-2">Bidang Terkait</label>
                             <select id="agenda-bidang" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition bg-white">
                                 <option value="Semua Bidang">Umum / Semua Bidang</option>
+                                <option value="Sekretariat">Sekretariat</option>
                                 <option value="Perencanaan">Bidang Perencanaan</option>
-                                <option value="Fispra">Bidang Fisik & Prasarana</option>
-                                <option value="Ekonomi">Bidang Ekonomi & SDA</option>
-                                <option value="Sosbud">Bidang Sosial Budaya</option>
+                                <option value="PPM">Bidang PPM</option>
+                                <option value="Ekonomi dan SDA">Bidang Ekonomi dan SDA</option>
+                                <option value="IPW">Bidang IPW</option>
+                                <option value="Litbang">Bidang Litbang</option>
                             </select>
                         </div>
                     </div>
@@ -579,7 +603,7 @@
                     
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">Username Baru *</label>
-                        <input type="text" id="user-username" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition" placeholder="Contoh: admin_fispra">
+                        <input type="text" id="user-username" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition" placeholder="Contoh: admin_perencanaan">
                     </div>
                     
                     <div class="mb-4">
@@ -591,10 +615,12 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2">Hak Akses (Role) *</label>
                         <select id="user-role-select" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition bg-white">
                             <option value="superadmin">Superadmin (Semua Akses)</option>
+                            <option value="Sekretariat">Sekretariat</option>
                             <option value="Perencanaan">Admin Bidang Perencanaan</option>
-                            <option value="Fispra">Admin Bidang Fisik & Prasarana</option>
-                            <option value="Ekonomi">Admin Bidang Ekonomi & SDA</option>
-                            <option value="Sosbud">Admin Bidang Sosial Budaya</option>
+                            <option value="PPM">Admin Bidang PPM</option>
+                            <option value="Ekonomi dan SDA">Admin Bidang Ekonomi dan SDA</option>
+                            <option value="IPW">Admin Bidang IPW</option>
+                            <option value="Litbang">Admin Bidang Litbang</option>
                         </select>
                     </div>
 
@@ -602,6 +628,49 @@
                         <button type="button" onclick="closeModal('user-modal')" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-lg transition text-sm">Batal</button>
                         <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg shadow transition text-sm flex items-center">
                             <i class="fas fa-save mr-2"></i> Simpan Pengguna
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FORM NOTULENSI LAPORAN -->
+    <div id="notulensi-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal('notulensi-modal')"></div>
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl mx-auto z-10 max-h-[90vh] flex flex-col relative" id="notulensi-modal-content">
+            <div class="flex justify-between items-center p-5 sm:p-6 border-b border-gray-100">
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Input Notulensi & Laporan</h3>
+                <button onclick="closeModal('notulensi-modal')" class="text-gray-400 hover:text-red-500 transition p-1"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="p-5 sm:p-6 overflow-y-auto bg-gray-50">
+                <!-- Info Event -->
+                <div class="bg-white p-4 rounded-lg border border-gray-200 mb-5 shadow-sm">
+                    <p class="text-xs text-brand-600 font-bold mb-1" id="nt-bidang-txt">Bidang</p>
+                    <h4 class="font-bold text-gray-800 text-lg leading-tight mb-2" id="nt-title-txt">Judul Agenda</h4>
+                    <p class="text-sm text-gray-500 flex items-center gap-2"><i class="far fa-calendar"></i> <span id="nt-date-txt">Tgl</span></p>
+                </div>
+
+                <form id="notulensi-form" onsubmit="saveNotulensi(event)">
+                    <input type="hidden" id="notulensi-agenda-id">
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Catatan / Ringkasan Rapat</label>
+                        <textarea id="notulensi-text" rows="5" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition" placeholder="Ketik ringkasan atau hasil kesepakatan agenda di sini..."></textarea>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2 flex items-center">
+                            <i class="fas fa-link mr-2 text-blue-500"></i> Link Lampiran / Dokumentasi (Opsional)
+                        </label>
+                        <input type="url" id="notulensi-link" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition" placeholder="Contoh: https://drive.google.com/drive/folders/...">
+                        <p class="text-[11px] text-gray-500 mt-1">Gunakan link Google Drive untuk foto kegiatan, daftar hadir, dsb.</p>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                        <button type="button" onclick="closeModal('notulensi-modal')" class="px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-medium rounded-lg transition text-sm">Tutup</button>
+                        <button type="submit" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg shadow transition text-sm flex items-center">
+                            <i class="fas fa-save mr-2"></i> Simpan Notulensi
                         </button>
                     </div>
                 </form>
@@ -630,14 +699,14 @@
         // ==========================================
         // SIMULASI DATABASE GOOGLE SHEETS (FALLBACK)
         // ==========================================
-        // Jika GAS_URL belum diisi, fungsi ini akan bertindak layaknya Google Sheets lokal
         function simulateGoogleSheetsData() {
             let lsAgendas = localStorage.getItem('gsheets_sim_agendas');
             let lsUsers = localStorage.getItem('gsheets_sim_users');
             
             if(!lsAgendas) {
                 lsAgendas = JSON.stringify([
-                    { id: 1, date: '2026-03-15', time: '09:00', title: 'Musrenbang RKPD', location: 'Aula Sindang', bidang: 'Perencanaan', status: 'Dikonfirmasi', pic_name: 'Bpk. Ahmad', pic_phone: '081200000001', status_h1: false, status_h2: false }
+                    { id: 1, date: '2026-03-15', time: '09:00', title: 'Musrenbang RKPD', location: 'Aula Sindang', bidang: 'Perencanaan', status: 'Dikonfirmasi', pic_name: 'Bpk. Ahmad', pic_phone: '081200000001', status_h1: false, status_h2: false, notulensi_text: '', notulensi_link: '' },
+                    { id: 2, date: '2026-03-01', time: '10:00', title: 'Rapat Evaluasi Anggaran', location: 'Ruang Rapat Utama', bidang: 'Sekretariat', status: 'Selesai', pic_name: 'Ibu Dina', pic_phone: '081200000002', status_h1: true, status_h2: true, notulensi_text: 'Rapat berjalan lancar, seluruh anggaran telah direvisi.', notulensi_link: 'https://drive.google.com' }
                 ]);
                 localStorage.setItem('gsheets_sim_agendas', lsAgendas);
             }
@@ -653,7 +722,6 @@
         // FUNGSI UTAMA PENGAMBILAN DATA (API/SIMULASI)
         async function fetchDatabase() {
             if (GAS_URL) {
-                // Fetch asli ke Google Sheets (Apps Script) dengan pencegah cache
                 try {
                     let response = await fetch(GAS_URL + "?action=getData&t=" + new Date().getTime());
                     let json = await response.json();
@@ -664,7 +732,6 @@
                     Swal.fire('Database Error', 'Gagal memuat data dari Google Sheets.', 'error');
                 }
             } else {
-                // Simulasi delay jaringan (500ms) agar terasa seperti fetch API sungguhan
                 await new Promise(r => setTimeout(r, 500)); 
                 let simData = simulateGoogleSheetsData();
                 dbAgendas = simData.agendas;
@@ -674,8 +741,6 @@
 
         // FUNGSI UTAMA MENYIMPAN DATA (API/SIMULASI)
         async function saveToDatabase(action, payload) {
-            // 1. Lakukan Update Data Lokal Terlebih Dahulu (Optimistic Update)
-            // Agar perubahan langsung tampil di tabel tanpa harus me-refresh halaman
             if(action === 'saveAgenda') {
                 let idx = dbAgendas.findIndex(a => a.id === payload.id);
                 if(idx >= 0) dbAgendas[idx] = payload;
@@ -690,7 +755,6 @@
                 dbUsers = dbUsers.filter(u => u.id !== payload.id);
             }
 
-            // 2. Kirim Data ke Server Cloud (Google Sheets) atau Local Storage
             if (GAS_URL) {
                 try {
                     let response = await fetch(GAS_URL, {
@@ -699,11 +763,9 @@
                     });
                     return await response.json();
                 } catch(e) {
-                    console.error("Gagal menyimpan ke Google Sheets:", e);
                     return { status: 'error' };
                 }
             } else {
-                // Simulasi penyimpanan lokal
                 await new Promise(r => setTimeout(r, 400));
                 localStorage.setItem('gsheets_sim_agendas', JSON.stringify(dbAgendas));
                 localStorage.setItem('gsheets_sim_users', JSON.stringify(dbUsers));
@@ -724,6 +786,7 @@
             if(currentUser) {
                 renderAdminAgendas();
                 renderUsersTable();
+                renderNotulensiTable();
                 updateDashboardStats();
             }
         }
@@ -733,7 +796,6 @@
             if(!tickerContainer) return;
             
             const now = new Date();
-            // Ambil 5 agenda mendesak yang belum lewat dan belum selesai/batal
             const upcoming = dbAgendas.filter(a => new Date(`${getRawDate(a.date)}T${formatTime(a.time)}`) >= now && a.status !== 'Ditunda' && a.status !== 'Selesai')
                                       .sort((a,b) => new Date(`${getRawDate(a.date)}T${formatTime(a.time)}`) - new Date(`${getRawDate(b.date)}T${formatTime(b.time)}`))
                                       .slice(0, 5);
@@ -760,7 +822,6 @@
 
             Swal.fire({ title: 'Otentikasi...', text: 'Memeriksa database...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
             
-            // Tarik data user terbaru dari server sebelum memvalidasi
             await fetchDatabase();
 
             const validUser = dbUsers.find(u => u.username === inputUser && u.password === inputPass);
@@ -772,7 +833,6 @@
                 document.getElementById('user-role').innerText = currentUser.role === 'superadmin' ? 'Super Admin' : 'Admin ' + currentUser.role;
                 document.getElementById('user-avatar').src = `https://ui-avatars.com/api/?name=${currentUser.username}&background=2563eb&color=fff`;
 
-                // Atur visibilitas menu berdasarkan role
                 if(currentUser.role === 'superadmin') {
                     document.getElementById('menu-users-btn').style.display = 'flex';
                 } else {
@@ -846,12 +906,8 @@
 
         function deleteUser(id) {
             Swal.fire({
-                title: 'Hapus Akses?',
-                text: "User ini tidak akan bisa login lagi.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e53e3e',
-                confirmButtonText: 'Ya, Hapus'
+                title: 'Hapus Akses?', text: "User ini tidak akan bisa login lagi.", icon: 'warning',
+                showCancelButton: true, confirmButtonColor: '#e53e3e', confirmButtonText: 'Ya, Hapus'
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     Swal.fire({ title: 'Menghapus...', didOpen: () => { Swal.showLoading() } });
@@ -880,16 +936,10 @@
             try {
                 const response = await fetch(WA_API_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-Secret-Key': WA_API_KEY
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-Secret-Key': WA_API_KEY },
                     body: JSON.stringify({ phone: formattedPhone, message: message })
                 });
-
-                if(response.ok) return true;
-                return false;
+                return response.ok;
             } catch (error) {
                 return false;
             }
@@ -907,11 +957,6 @@
             if(reminderInterval) clearInterval(reminderInterval);
             document.getElementById('wa-bot-indicator').classList.remove('animate-pulse');
             document.getElementById('wa-bot-indicator').classList.replace('bg-green-500', 'bg-gray-400');
-        }
-
-        function forceCheckReminders() {
-            Swal.fire({ title: 'Mengecek Jadwal...', text: 'Sistem memindai jadwal untuk H-1 & 2 Jam.', icon: 'info', timer: 2000, showConfirmButton: false });
-            checkAndSendReminders();
         }
 
         async function checkAndSendReminders() {
@@ -934,7 +979,7 @@
                     if(await sendWhatsApp(ag.pic_phone, msg, "Otomatis H-1")) {
                         dbAgendas[i].status_h1 = true;
                         needsDbUpdate = true;
-                        await saveToDatabase('saveAgenda', dbAgendas[i]); // Simpan satu per satu ke DB
+                        await saveToDatabase('saveAgenda', dbAgendas[i]); 
                     }
                 }
 
@@ -982,13 +1027,8 @@
             
             if (viewId === 'public-view') {
                 stopReminderBot();
-                fetchDataFromServer(false); // background fetch for public view
-                if (!publicSyncInterval) {
-                    // Auto-sync setiap 30 detik untuk halaman publik
-                    publicSyncInterval = setInterval(() => {
-                        fetchDataFromServer(false);
-                    }, 30000); 
-                }
+                fetchDataFromServer(false);
+                if (!publicSyncInterval) publicSyncInterval = setInterval(() => { fetchDataFromServer(false); }, 30000); 
             } else if (viewId === 'app-view') {
                 if(publicSyncInterval) { clearInterval(publicSyncInterval); publicSyncInterval = null; }
                 fetchDataFromServer(true);
@@ -1018,6 +1058,7 @@
             if (menuId === 'menu-dashboard') updateDashboardStats();
             if (menuId === 'menu-agenda') renderAdminAgendas();
             if (menuId === 'menu-users') renderUsersTable();
+            if (menuId === 'menu-notulensi') renderNotulensiTable();
 
             if (window.innerWidth < 768) toggleMobileMenu();
         }
@@ -1025,7 +1066,6 @@
         function toggleMobileMenu() {
             const sidebar = document.getElementById('sidebar');
             const backdrop = document.getElementById('sidebar-backdrop');
-            
             if (sidebar.classList.contains('hidden') || sidebar.classList.contains('-translate-x-full')) {
                 sidebar.classList.remove('hidden', '-translate-x-full');
                 sidebar.classList.add('flex', 'translate-x-0');
@@ -1048,15 +1088,11 @@
             }
         }
 
-        function formatDate(dateStr) {
-            return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-        }
-
+        function formatDate(dateStr) { return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); }
+        
         function getRawDate(dateStr) {
             if (!dateStr) return "";
-            if (typeof dateStr === 'string' && dateStr.includes('T')) {
-                return dateStr.split('T')[0];
-            }
+            if (typeof dateStr === 'string' && dateStr.includes('T')) return dateStr.split('T')[0];
             return dateStr;
         }
 
@@ -1066,12 +1102,8 @@
                 if (timeStr.includes('T')) {
                     try {
                         const d = new Date(timeStr);
-                        let hours = d.getHours().toString().padStart(2, '0');
-                        let minutes = d.getMinutes().toString().padStart(2, '0');
-                        return `${hours}:${minutes}`;
-                    } catch (e) {
-                        return "00:00";
-                    }
+                        return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+                    } catch (e) { return "00:00"; }
                 }
                 return timeStr.substring(0, 5);
             }
@@ -1116,7 +1148,6 @@
             const tbody = document.getElementById('admin-agenda-table');
             const search = document.getElementById('admin-search').value.toLowerCase();
             
-            // Filter berdasarkan role (Jika bukan superadmin, hanya lihat bidangknya saja, opsional. Saat ini semua bisa lihat)
             let filtered = dbAgendas.filter(a => a.title.toLowerCase().includes(search));
             filtered.sort((a,b) => new Date(`${getRawDate(b.date)}T${formatTime(b.time)}`) - new Date(`${getRawDate(a.date)}T${formatTime(a.time)}`)); 
 
@@ -1131,8 +1162,7 @@
                 const badgeH1 = ag.status_h1 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400';
                 const badgeH2 = ag.status_h2 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400';
 
-                // Hanya superadmin atau admin bidang terkait yang boleh edit (contoh logika akses)
-                const canEdit = currentUser.role === 'superadmin' || currentUser.role === ag.bidang;
+                const canEdit = currentUser.role === 'superadmin' || currentUser.role === ag.bidang || currentUser.role === 'Semua Bidang';
                 const actionBtns = canEdit ? `
                     <button onclick="editAgenda(${ag.id})" class="text-brand-500 hover:bg-brand-50 p-2 rounded transition" title="Edit"><i class="fas fa-edit"></i></button>
                     <button onclick="deleteAgenda(${ag.id})" class="text-red-500 hover:bg-red-50 p-2 rounded transition" title="Hapus"><i class="fas fa-trash"></i></button>
@@ -1170,6 +1200,109 @@
         }
 
         // ==========================================
+        // NOTULENSI LAPORAN LOGIC
+        // ==========================================
+        function renderNotulensiTable() {
+            const tbody = document.getElementById('notulensi-table');
+            const search = document.getElementById('notulensi-search').value.toLowerCase();
+            
+            let filtered = dbAgendas.filter(a => a.title.toLowerCase().includes(search));
+            filtered.sort((a,b) => new Date(`${getRawDate(b.date)}T${formatTime(b.time)}`) - new Date(`${getRawDate(a.date)}T${formatTime(a.time)}`)); 
+
+            tbody.innerHTML = '';
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Tidak ada data ditemukan.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(ag => {
+                const s = getStatusConfig(ag.status);
+                const isNotulensiFilled = (ag.notulensi_text && ag.notulensi_text.trim() !== '') || (ag.notulensi_link && ag.notulensi_link.trim() !== '');
+                const notulensiBadge = isNotulensiFilled 
+                    ? `<span class="bg-emerald-100 text-emerald-700 text-xs px-3 py-1 rounded-full font-bold"><i class="fas fa-check-circle mr-1"></i> Terisi</span>` 
+                    : `<span class="bg-gray-100 text-gray-500 text-xs px-3 py-1 rounded-full font-bold"><i class="fas fa-exclamation-circle mr-1"></i> Kosong</span>`;
+                
+                // Cek izin (Superadmin atau Admin Bidang yg bersesuaian)
+                const canEdit = currentUser.role === 'superadmin' || currentUser.role === ag.bidang || currentUser.role === 'Semua Bidang';
+                
+                const btnAction = canEdit 
+                    ? `<button onclick="openNotulensiModal(${ag.id})" class="bg-brand-50 hover:bg-brand-100 text-brand-600 text-xs font-bold px-4 py-2 rounded transition">Input / Edit</button>`
+                    : `<button onclick="openNotulensiModal(${ag.id}, true)" class="bg-gray-50 hover:bg-gray-100 text-gray-600 text-xs font-bold px-4 py-2 rounded transition">Lihat</button>`;
+
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                        <td class="p-4">
+                            <div class="font-bold text-gray-800">${formatDate(ag.date)}</div>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-medium text-gray-800 leading-tight">${ag.title}</div>
+                            <div class="text-[11px] sm:text-xs text-gray-500 mt-1">Bidang: ${ag.bidang}</div>
+                        </td>
+                        <td class="p-4 text-center">
+                            <span class="${s.text} text-xs font-semibold whitespace-nowrap">${ag.status}</span>
+                        </td>
+                        <td class="p-4 text-center">
+                            ${notulensiBadge}
+                        </td>
+                        <td class="p-4 text-right">
+                            ${btnAction}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openNotulensiModal(id, readOnly = false) {
+            const modal = document.getElementById('notulensi-modal');
+            const content = document.getElementById('notulensi-modal-content');
+            
+            const ag = dbAgendas.find(a => a.id === id);
+            if(!ag) return;
+
+            document.getElementById('notulensi-agenda-id').value = ag.id;
+            document.getElementById('nt-title-txt').innerText = ag.title;
+            document.getElementById('nt-date-txt').innerText = `${formatDate(ag.date)} - ${formatTime(ag.time)} WIB`;
+            document.getElementById('nt-bidang-txt').innerText = ag.bidang.toUpperCase();
+            
+            const txtArea = document.getElementById('notulensi-text');
+            const lnkInput = document.getElementById('notulensi-link');
+            const submitBtn = document.querySelector('#notulensi-form button[type="submit"]');
+
+            txtArea.value = ag.notulensi_text || '';
+            lnkInput.value = ag.notulensi_link || '';
+
+            if(readOnly) {
+                txtArea.readOnly = true;
+                lnkInput.readOnly = true;
+                submitBtn.style.display = 'none';
+            } else {
+                txtArea.readOnly = false;
+                lnkInput.readOnly = false;
+                submitBtn.style.display = 'flex';
+            }
+
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            content.classList.remove('modal-leave'); content.classList.add('modal-enter');
+        }
+
+        async function saveNotulensi(e) {
+            e.preventDefault();
+            const idVal = parseInt(document.getElementById('notulensi-agenda-id').value);
+            let ag = dbAgendas.find(a => a.id === idVal);
+            if(!ag) return;
+
+            ag.notulensi_text = document.getElementById('notulensi-text').value;
+            ag.notulensi_link = document.getElementById('notulensi-link').value;
+
+            Swal.fire({ title: 'Menyimpan Notulensi...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+            await saveToDatabase('saveAgenda', ag);
+            Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Laporan notulensi telah disimpan.', timer: 1500, showConfirmButton: false });
+            
+            closeModal('notulensi-modal');
+            renderNotulensiTable();
+        }
+
+        // ==========================================
         // AGENDA CRUD & MODAL
         // ==========================================
         function openModal(id = null) {
@@ -1195,9 +1328,10 @@
                 document.getElementById('agenda-form').reset();
                 document.getElementById('agenda-id').value = '';
                 
-                // Auto-select bidang berdasarkan login user
-                if(currentUser && currentUser.role !== 'superadmin') {
+                if(currentUser && currentUser.role !== 'superadmin' && currentUser.role !== 'Semua Bidang') {
                     document.getElementById('agenda-bidang').value = currentUser.role;
+                } else {
+                    document.getElementById('agenda-bidang').value = 'Semua Bidang';
                 }
             }
         }
@@ -1213,7 +1347,7 @@
 
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
-            const content = document.getElementById(modalId === 'agenda-modal' ? 'modal-content' : 'user-modal-content');
+            const content = document.getElementById(modalId === 'agenda-modal' ? 'modal-content' : (modalId === 'notulensi-modal' ? 'notulensi-modal-content' : 'user-modal-content'));
             content.classList.remove('modal-enter'); content.classList.add('modal-leave');
             setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
         }
@@ -1221,6 +1355,8 @@
         async function saveAgenda(e) {
             e.preventDefault();
             const idVal = document.getElementById('agenda-id').value;
+            // Get existing or create new
+            let existingAgenda = idVal ? dbAgendas.find(a => a.id === parseInt(idVal)) : {};
             
             const payload = {
                 id: idVal ? parseInt(idVal) : Date.now(),
@@ -1232,17 +1368,19 @@
                 status: document.getElementById('agenda-status').value,
                 pic_name: document.getElementById('agenda-pic-name').value,
                 pic_phone: document.getElementById('agenda-pic-phone').value,
-                status_h1: false, // Reset saat dirubah agar dikirim ulang jika jadwal ganti
-                status_h2: false
+                status_h1: false, 
+                status_h2: false,
+                notulensi_text: existingAgenda.notulensi_text || '', 
+                notulensi_link: existingAgenda.notulensi_link || ''
             };
 
             Swal.fire({ title: 'Menyimpan ke Server...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
-            
             await saveToDatabase('saveAgenda', payload);
             Swal.fire({ icon: 'success', title: 'Tersimpan', text: 'Data berhasil disinkronkan!', timer: 1500, showConfirmButton: false });
             
             closeModal('agenda-modal');
             renderAdminAgendas();
+            if(!document.getElementById('content-menu-notulensi').classList.contains('hidden')) renderNotulensiTable();
             updateDashboardStats();
         }
 
@@ -1256,6 +1394,7 @@
                     await saveToDatabase('deleteAgenda', { id: id });
                     Swal.fire('Terhapus!', 'Agenda telah dihapus dari sistem.', 'success');
                     renderAdminAgendas();
+                    if(!document.getElementById('content-menu-notulensi').classList.contains('hidden')) renderNotulensiTable();
                     updateDashboardStats();
                 }
             })
@@ -1295,7 +1434,7 @@
                     options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } } }
                 });
 
-                const bidangCounts = { 'Perencanaan': 0, 'Fispra': 0, 'Ekonomi': 0, 'Sosbud': 0, 'Semua Bidang': 0 };
+                const bidangCounts = { 'Semua Bidang': 0, 'Sekretariat': 0, 'Perencanaan': 0, 'PPM': 0, 'Ekonomi dan SDA': 0, 'IPW': 0, 'Litbang': 0 };
                 dbAgendas.forEach(a => { if(bidangCounts[a.bidang] !== undefined) bidangCounts[a.bidang]++; });
 
                 if(barChart) barChart.destroy();
@@ -1312,7 +1451,6 @@
 
         // --- INIT ---
         window.onload = async () => {
-            // Kita jalankan fetch pertama kali sebagai guest
             await fetchDataFromServer(false); 
             switchMainView('public-view'); 
         };
