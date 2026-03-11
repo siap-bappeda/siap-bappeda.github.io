@@ -546,6 +546,7 @@
                                 <option value="IPW">Bidang IPW</option>
                                 <option value="Litbang">Bidang Litbang</option>
                             </select>
+                            <p id="agenda-bidang-lock-msg" class="text-[10px] text-brand-600 mt-1 hidden"><i class="fas fa-lock"></i> Terkunci sesuai akun admin Anda.</p>
                         </div>
                     </div>
 
@@ -733,7 +734,8 @@
             }
             if(!lsUsers) {
                 lsUsers = JSON.stringify([
-                    { id: 1, username: 'admin', password: 'password', role: 'superadmin' }
+                    { id: 1, username: 'admin', password: 'password', role: 'superadmin' },
+                    { id: 2, username: 'admin_perencanaan', password: 'password', role: 'Perencanaan' }
                 ]);
                 localStorage.setItem('gsheets_sim_users', lsUsers);
             }
@@ -1174,7 +1176,13 @@
             const tbody = document.getElementById('admin-agenda-table');
             const search = document.getElementById('admin-search').value.toLowerCase();
             
-            let filtered = dbAgendas.filter(a => a.title.toLowerCase().includes(search));
+            // Batasi data sesuai role
+            let viewableAgendas = dbAgendas;
+            if (currentUser && currentUser.role !== 'superadmin') {
+                viewableAgendas = dbAgendas.filter(a => a.bidang === currentUser.role);
+            }
+            
+            let filtered = viewableAgendas.filter(a => a.title.toLowerCase().includes(search));
             filtered.sort((a,b) => new Date(`${getRawDate(b.date)}T${formatTime(b.time)}`) - new Date(`${getRawDate(a.date)}T${formatTime(a.time)}`)); 
 
             tbody.innerHTML = '';
@@ -1232,7 +1240,13 @@
             const tbody = document.getElementById('notulensi-table');
             const search = document.getElementById('notulensi-search').value.toLowerCase();
             
-            let filtered = dbAgendas.filter(a => a.title.toLowerCase().includes(search));
+            // Batasi data sesuai role
+            let viewableAgendas = dbAgendas;
+            if (currentUser && currentUser.role !== 'superadmin') {
+                viewableAgendas = dbAgendas.filter(a => a.bidang === currentUser.role);
+            }
+
+            let filtered = viewableAgendas.filter(a => a.title.toLowerCase().includes(search));
             filtered.sort((a,b) => new Date(`${getRawDate(b.date)}T${formatTime(b.time)}`) - new Date(`${getRawDate(a.date)}T${formatTime(a.time)}`)); 
 
             tbody.innerHTML = '';
@@ -1396,6 +1410,9 @@
             modal.classList.remove('hidden'); modal.classList.add('flex');
             content.classList.remove('modal-leave'); content.classList.add('modal-enter');
 
+            const bidangSelect = document.getElementById('agenda-bidang');
+            const lockMsg = document.getElementById('agenda-bidang-lock-msg');
+
             if (id) {
                 document.getElementById('modal-title').innerText = "Edit Agenda";
                 const ag = dbAgendas.find(a => a.id === id);
@@ -1404,7 +1421,12 @@
                 document.getElementById('agenda-date').value = getRawDate(ag.date);
                 document.getElementById('agenda-time').value = formatTime(ag.time);
                 document.getElementById('agenda-location').value = ag.location;
-                document.getElementById('agenda-bidang').value = ag.bidang;
+                
+                bidangSelect.value = ag.bidang;
+                bidangSelect.disabled = false; // Always allow view/save of existing
+                bidangSelect.classList.remove('bg-gray-100', 'cursor-not-allowed');
+                lockMsg.classList.add('hidden');
+                
                 document.getElementById('agenda-status').value = ag.status;
                 document.getElementById('agenda-pic-name').value = ag.pic_name || '';
                 document.getElementById('agenda-pic-phone').value = ag.pic_phone || '';
@@ -1413,10 +1435,17 @@
                 document.getElementById('agenda-form').reset();
                 document.getElementById('agenda-id').value = '';
                 
-                if(currentUser && currentUser.role !== 'superadmin' && currentUser.role !== 'Semua Bidang') {
-                    document.getElementById('agenda-bidang').value = currentUser.role;
+                // Batasan dan penguncian kolom bidang saat membuat agenda baru
+                if(currentUser && currentUser.role !== 'superadmin') {
+                    bidangSelect.value = currentUser.role;
+                    bidangSelect.disabled = true; // Kunci pilihan
+                    bidangSelect.classList.add('bg-gray-100', 'cursor-not-allowed');
+                    lockMsg.classList.remove('hidden');
                 } else {
-                    document.getElementById('agenda-bidang').value = 'Semua Bidang';
+                    bidangSelect.value = 'Semua Bidang';
+                    bidangSelect.disabled = false;
+                    bidangSelect.classList.remove('bg-gray-100', 'cursor-not-allowed');
+                    lockMsg.classList.add('hidden');
                 }
             }
         }
@@ -1442,13 +1471,17 @@
             const idVal = document.getElementById('agenda-id').value;
             let existingAgenda = idVal ? dbAgendas.find(a => a.id === parseInt(idVal)) : {};
             
+            // Ambil value bidang, bypass disabled state
+            const bidangSelect = document.getElementById('agenda-bidang');
+            const bidangValue = bidangSelect.disabled ? currentUser.role : bidangSelect.value;
+            
             const payload = {
                 id: idVal ? parseInt(idVal) : Date.now(),
                 title: document.getElementById('agenda-title').value,
                 date: document.getElementById('agenda-date').value,
                 time: document.getElementById('agenda-time').value,
                 location: document.getElementById('agenda-location').value,
-                bidang: document.getElementById('agenda-bidang').value,
+                bidang: bidangValue,
                 status: document.getElementById('agenda-status').value,
                 pic_name: document.getElementById('agenda-pic-name').value,
                 pic_phone: document.getElementById('agenda-pic-phone').value,
@@ -1493,10 +1526,16 @@
         Chart.defaults.font.family = "'Inter', sans-serif";
 
         function updateDashboardStats() {
-            const total = dbAgendas.length;
-            const selesai = dbAgendas.filter(a => a.status === 'Selesai').length;
-            const mendatang = dbAgendas.filter(a => a.status === 'Dikonfirmasi' || a.status === 'Persiapan').length;
-            const batal = dbAgendas.filter(a => a.status === 'Ditunda').length;
+            // Batasi data sesuai role untuk perhitungan statistik
+            let viewableAgendas = dbAgendas;
+            if (currentUser && currentUser.role !== 'superadmin') {
+                viewableAgendas = dbAgendas.filter(a => a.bidang === currentUser.role);
+            }
+
+            const total = viewableAgendas.length;
+            const selesai = viewableAgendas.filter(a => a.status === 'Selesai').length;
+            const mendatang = viewableAgendas.filter(a => a.status === 'Dikonfirmasi' || a.status === 'Persiapan').length;
+            const batal = viewableAgendas.filter(a => a.status === 'Ditunda').length;
 
             document.getElementById('stat-total').innerText = total;
             document.getElementById('stat-selesai').innerText = selesai;
@@ -1519,7 +1558,7 @@
                 });
 
                 const bidangCounts = { 'Semua Bidang': 0, 'Sekretariat': 0, 'Perencanaan': 0, 'PPM': 0, 'Ekonomi dan SDA': 0, 'IPW': 0, 'Litbang': 0 };
-                dbAgendas.forEach(a => { if(bidangCounts[a.bidang] !== undefined) bidangCounts[a.bidang]++; });
+                viewableAgendas.forEach(a => { if(bidangCounts[a.bidang] !== undefined) bidangCounts[a.bidang]++; });
 
                 if(barChart) barChart.destroy();
                 barChart = new Chart(ctxBElement, {
