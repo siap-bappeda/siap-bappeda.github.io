@@ -20,6 +20,13 @@
     <!-- SweetAlert2 for beautiful alerts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <!-- jsPDF & AutoTable for PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -276,6 +283,11 @@
                         <i class="fas fa-file-alt w-6 text-center mr-2"></i>
                         <span class="text-sm">Notulensi Laporan</span>
                     </a>
+                    <!-- NEW: REKAP LAPORAN MENU -->
+                    <a href="#" onclick="switchMenu('menu-rekap', this)" class="menu-btn flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <i class="fas fa-file-export w-6 text-center mr-2"></i>
+                        <span class="text-sm">Rekap Laporan</span>
+                    </a>
                 </nav>
             </div>
             
@@ -403,7 +415,7 @@
                     </div>
                 </div>
 
-                <!-- NEW CONTENT: DATA PEGAWAI -->
+                <!-- CONTENT: DATA PEGAWAI -->
                 <div id="content-menu-pegawai" class="menu-content hidden">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
                         <div class="p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50">
@@ -536,6 +548,61 @@
                     </div>
                 </div>
 
+                <!-- NEW CONTENT 5: REKAP LAPORAN -->
+                <div id="content-menu-rekap" class="menu-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+                        <div class="p-5 border-b border-gray-100 bg-gray-50 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-lg font-bold text-gray-800">Cetak Rekapitulasi Agenda</h2>
+                                <p class="text-xs text-gray-500 mt-1">Saring data berdasarkan rentang tanggal untuk diunduh (Excel / PDF).</p>
+                            </div>
+                            
+                            <!-- Date Filters -->
+                            <div class="flex flex-col sm:flex-row gap-3 items-end sm:items-center">
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+                                    <span class="text-xs font-semibold text-gray-600 uppercase">Dari:</span>
+                                    <input type="date" id="rekap-start" class="w-full sm:w-auto border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500">
+                                </div>
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+                                    <span class="text-xs font-semibold text-gray-600 uppercase">Sampai:</span>
+                                    <input type="date" id="rekap-end" class="w-full sm:w-auto border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500">
+                                </div>
+                                <button onclick="renderRekapTable()" class="w-full sm:w-auto bg-gray-800 hover:bg-gray-900 text-white text-sm font-bold px-4 py-2 rounded-lg shadow transition flex items-center justify-center">
+                                    <i class="fas fa-search mr-2"></i> Tampilkan
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Export Action Buttons -->
+                        <div class="px-5 py-3 border-b border-gray-100 bg-white flex justify-end gap-3 flex-wrap">
+                            <button onclick="exportExcel()" class="bg-green-600 hover:bg-green-700 text-white text-sm font-bold px-4 py-2 rounded-lg shadow transition flex items-center">
+                                <i class="fas fa-file-excel mr-2"></i> Unduh Excel
+                            </button>
+                            <button onclick="exportPDF()" class="bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-4 py-2 rounded-lg shadow transition flex items-center">
+                                <i class="fas fa-file-pdf mr-2"></i> Unduh PDF (A4)
+                            </button>
+                        </div>
+
+                        <!-- Data Preview Table -->
+                        <div class="overflow-x-auto w-full max-h-[500px] overflow-y-auto">
+                            <table class="w-full text-left border-collapse min-w-[900px]">
+                                <thead class="sticky top-0 z-10">
+                                    <tr class="bg-gray-50 border-b border-gray-200 text-xs uppercase text-gray-500 font-semibold tracking-wider">
+                                        <th class="p-4 w-40">Tgl & Waktu</th>
+                                        <th class="p-4 w-64">Nama Kegiatan</th>
+                                        <th class="p-4 w-32">Bidang</th>
+                                        <th class="p-4 w-48">Lokasi</th>
+                                        <th class="p-4 text-center w-32">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm bg-white" id="rekap-table">
+                                    <tr><td colspan="5" class="p-8 text-center text-gray-500">Silakan pilih rentang tanggal dan klik "Tampilkan".</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
@@ -629,7 +696,7 @@
                         </div>
                     </div>
 
-                    <!-- PENGATURAN PESERTA (BARU) -->
+                    <!-- PENGATURAN PESERTA -->
                     <div class="mt-4 pt-4 border-t border-gray-100">
                         <div class="flex items-center justify-between mb-3">
                             <div class="flex items-center text-green-600">
@@ -805,6 +872,7 @@
         let reminderInterval = null;
         let publicSyncInterval = null;
         let currentAgendaAttendees = []; // State sementara form agenda
+        let currentRekapData = []; // State sementara filter cetak rekap
 
         // ==========================================
         // SIMULASI DATABASE GOOGLE SHEETS (FALLBACK)
@@ -932,6 +1000,7 @@
                 renderUsersTable();
                 renderPegawaiTable();
                 renderNotulensiTable();
+                if(!document.getElementById('content-menu-rekap').classList.contains('hidden')) renderRekapTable();
                 updateDashboardStats();
             }
         }
@@ -1025,7 +1094,6 @@
             }
 
             filtered.forEach(p => {
-                // Gunakan p.type dari GS, atau fallback ke p.status jika ada data lama
                 const empType = p.type || p.status || '-'; 
                 const bgStatus = empType === 'PNS' ? 'bg-blue-100 text-blue-700' : (empType === 'PPPK' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-700');
                 
@@ -1132,7 +1200,6 @@
             renderAttendeesList();
         }
 
-
         // ==========================================
         // MANAJEMEN PENGGUNA (CRUD)
         // ==========================================
@@ -1188,7 +1255,7 @@
         }
 
         // ==========================================
-        // API & BOT WHATSAPP LOGIC (DIPERBARUI)
+        // API & BOT WHATSAPP LOGIC
         // ==========================================
         function formatPhone(phone) {
             if(!phone) return "";
@@ -1334,6 +1401,7 @@
             if (menuId === 'menu-pegawai') renderPegawaiTable();
             if (menuId === 'menu-users') renderUsersTable();
             if (menuId === 'menu-notulensi') renderNotulensiTable();
+            if (menuId === 'menu-rekap') renderRekapTable(); // Trigger renderRekapTable
 
             if (window.innerWidth < 768) toggleMobileMenu();
         }
@@ -1773,6 +1841,7 @@
             closeModal('agenda-modal');
             renderAdminAgendas();
             if(!document.getElementById('content-menu-notulensi').classList.contains('hidden')) renderNotulensiTable();
+            if(!document.getElementById('content-menu-rekap').classList.contains('hidden')) renderRekapTable();
             updateDashboardStats();
         }
 
@@ -1787,12 +1856,152 @@
                     Swal.fire('Terhapus!', 'Agenda telah dihapus dari sistem.', 'success');
                     renderAdminAgendas();
                     if(!document.getElementById('content-menu-notulensi').classList.contains('hidden')) renderNotulensiTable();
+                    if(!document.getElementById('content-menu-rekap').classList.contains('hidden')) renderRekapTable();
                     updateDashboardStats();
                 }
             })
         }
 
         function editAgenda(id) { openModal(id); }
+
+        // ==========================================
+        // FITUR BARU: CETAK REKAPITULASI (EXCEL & PDF)
+        // ==========================================
+        function renderRekapTable() {
+            const tbody = document.getElementById('rekap-table');
+            const startInput = document.getElementById('rekap-start').value;
+            const endInput = document.getElementById('rekap-end').value;
+
+            // Filter by role (Admin Bidang hanya melihat agendanya sendiri)
+            let filtered = dbAgendas;
+            if (currentUser && currentUser.role !== 'superadmin') {
+                filtered = filtered.filter(a => a.bidang === currentUser.role);
+            }
+
+            // Filter Range Tanggal
+            if (startInput) {
+                const startDate = new Date(startInput);
+                filtered = filtered.filter(a => new Date(getRawDate(a.date)) >= startDate);
+            }
+            if (endInput) {
+                const endDate = new Date(endInput);
+                filtered = filtered.filter(a => new Date(getRawDate(a.date)) <= endDate);
+            }
+
+            // Sorting dari waktu paling awal (Ascending)
+            filtered.sort((a,b) => new Date(`${getRawDate(a.date)}T${formatTime(a.time)}`) - new Date(`${getRawDate(b.date)}T${formatTime(b.time)}`));
+            
+            currentRekapData = filtered; // Simpan di global state untuk di-export
+
+            tbody.innerHTML = '';
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Tidak ada agenda pada rentang tanggal tersebut.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(ag => {
+                const s = getStatusConfig(ag.status);
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                        <td class="p-4"><div class="font-bold text-gray-800">${formatDate(ag.date)}</div><div class="text-[11px] text-gray-500">${formatTime(ag.time)} WIB</div></td>
+                        <td class="p-4 font-medium text-gray-800">${ag.title}</td>
+                        <td class="p-4 text-gray-600 text-sm">${ag.bidang}</td>
+                        <td class="p-4 text-gray-600 text-sm">${ag.location}</td>
+                        <td class="p-4 text-center"><span class="${s.text} text-xs font-semibold">${ag.status}</span></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function exportExcel() {
+            if(currentRekapData.length === 0) return Swal.fire('Data Kosong', 'Silakan pilih rentang tanggal yang memiliki data.', 'warning');
+            
+            const dataToExport = currentRekapData.map((ag, index) => ({
+                'No': index + 1,
+                'Tanggal': formatDate(ag.date),
+                'Waktu': formatTime(ag.time) + ' WIB',
+                'Nama Kegiatan': ag.title,
+                'Bidang Terkait': ag.bidang,
+                'Lokasi': ag.location,
+                'Status': ag.status,
+                'Peserta Terhubung': ag.attendees ? ag.attendees.map(x => x.name).join(', ') : '-'
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(dataToExport);
+            
+            // Adjust column widths automatically
+            const colWidths = [ {wch: 5}, {wch: 20}, {wch: 15}, {wch: 40}, {wch: 25}, {wch: 30}, {wch: 15}, {wch: 50} ];
+            ws['!cols'] = colWidths;
+
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Rekap Agenda");
+            XLSX.writeFile(wb, `Rekap_Agenda_BAPPEDA_${new Date().toISOString().split('T')[0]}.xlsx`);
+        }
+
+        function exportPDF() {
+            if(currentRekapData.length === 0) return Swal.fire('Data Kosong', 'Silakan pilih rentang tanggal yang memiliki data.', 'warning');
+            
+            const { jsPDF } = window.jspdf;
+            // Kertas A4 mode Landscape agar tabel cukup
+            const doc = new jsPDF('l', 'mm', 'a4'); 
+
+            // Header Teks
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text("REKAPITULASI AGENDA BAPPEDA BENGKULU TENGAH", doc.internal.pageSize.getWidth() / 2, 15, { align: "center" });
+            
+            // Sub Header: Filter Tanggal & Bidang
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            
+            const start = document.getElementById('rekap-start').value;
+            const end = document.getElementById('rekap-end').value;
+            let periodeStr = "Semua Waktu";
+            if(start && end) periodeStr = `${formatDate(start)} s.d ${formatDate(end)}`;
+            else if(start) periodeStr = `Mulai ${formatDate(start)}`;
+            else if(end) periodeStr = `Hingga ${formatDate(end)}`;
+            
+            doc.text(`Periode: ${periodeStr}`, doc.internal.pageSize.getWidth() / 2, 22, { align: "center" });
+            doc.text(`Bidang: ${currentUser.role === 'superadmin' ? 'Semua Bidang' : currentUser.role}`, doc.internal.pageSize.getWidth() / 2, 28, { align: "center" });
+
+            // Persiapan Tabel
+            const tableColumn = ["No", "Tanggal", "Waktu", "Nama Kegiatan", "Bidang", "Lokasi", "Status"];
+            const tableRows = [];
+
+            currentRekapData.forEach((ag, index) => {
+                const rowData = [
+                    index + 1,
+                    formatDate(ag.date),
+                    formatTime(ag.time),
+                    ag.title,
+                    ag.bidang,
+                    ag.location,
+                    ag.status
+                ];
+                tableRows.push(rowData);
+            });
+
+            // Pembuatan AutoTable
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 35,
+                theme: 'grid',
+                headStyles: { fillColor: [37, 99, 235], textColor: 255 }, // Warna biru brand-600
+                styles: { fontSize: 9, cellPadding: 3 },
+                columnStyles: { 
+                    0: { cellWidth: 10, halign: 'center' },
+                    1: { cellWidth: 35 },
+                    2: { cellWidth: 20 },
+                    3: { cellWidth: 'auto' }, // Melar otomatis
+                    4: { cellWidth: 40 },
+                    5: { cellWidth: 50 },
+                    6: { cellWidth: 25 }
+                }
+            });
+
+            doc.save(`Rekap_Agenda_BAPPEDA_${new Date().toISOString().split('T')[0]}.pdf`);
+        }
 
         // ==========================================
         // CHARTS & STATS
