@@ -147,7 +147,7 @@
                                 <i class="fab fa-whatsapp text-2xl"></i>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 mb-2">Notifikasi WhatsApp</h3>
-                            <p class="text-gray-500 text-sm leading-relaxed">Sistem dilengkapi bot pengingat otomatis ke PIC pada H-1 dan 2 Jam sebelum kegiatan berlangsung.</p>
+                            <p class="text-gray-500 text-sm leading-relaxed">Sistem dilengkapi bot pengingat otomatis ke SELURUH peserta pada H-1 dan 2 Jam sebelum kegiatan berlangsung.</p>
                         </div>
                     </div>
                     <!-- Feature 3 -->
@@ -259,6 +259,11 @@
                         <i class="fas fa-calendar-alt w-6 text-center mr-2"></i>
                         <span class="text-sm">Kelola Agenda Pimpinan</span>
                     </a>
+                    <!-- NEW: DATA PEGAWAI MENU -->
+                    <a href="#" onclick="switchMenu('menu-pegawai', this)" class="menu-btn flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <i class="fas fa-address-book w-6 text-center mr-2"></i>
+                        <span class="text-sm">Data Pegawai</span>
+                    </a>
                 </nav>
 
                 <div class="px-6 mt-8 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Administrator</div>
@@ -331,7 +336,7 @@
                     <div class="bg-blue-50 border border-blue-100 text-blue-800 px-4 py-3 rounded-xl mb-6 flex items-start shadow-sm">
                         <i class="fas fa-info-circle text-brand-500 mt-0.5 mr-3 text-lg"></i>
                         <div class="text-sm">
-                            <p><strong>Selamat Datang, <span id="welcome-name">Admin</span>!</strong> Sistem ini telah terintegrasi dengan <b>Google Sheets</b> sebagai basis data dan <b>Bot WA Otomatis</b> yang aktif mengirim H-1 dan 2 Jam sebelum acara.</p>
+                            <p><strong>Selamat Datang, <span id="welcome-name">Admin</span>!</strong> Sistem ini telah terintegrasi dengan <b>Google Sheets</b> sebagai basis data dan <b>Bot WA Otomatis</b>. Mohon isi <b>Data Pegawai</b> terlebih dahulu untuk memudahkan assign multi-peserta ke dalam Agenda.</p>
                         </div>
                     </div>
 
@@ -365,12 +370,12 @@
                             </div>
                         </div>
                         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 relative overflow-hidden group hover:shadow-md transition">
-                            <div class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">DIBATALKAN / DITUNDA</div>
+                            <div class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">TOTAL PEGAWAI</div>
                             <div class="flex items-end justify-between">
                                 <div class="flex items-center">
-                                    <span class="text-3xl font-bold text-red-500" id="stat-batal">0</span>
+                                    <span class="text-3xl font-bold text-brand-600" id="stat-pegawai">0</span>
                                 </div>
-                                <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-500"><i class="fas fa-times-circle"></i></div>
+                                <div class="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center text-brand-500"><i class="fas fa-users"></i></div>
                             </div>
                         </div>
                     </div>
@@ -398,13 +403,46 @@
                     </div>
                 </div>
 
+                <!-- NEW CONTENT: DATA PEGAWAI -->
+                <div id="content-menu-pegawai" class="menu-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+                        <div class="p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50">
+                            <div>
+                                <h2 class="text-lg font-bold text-gray-800">Database Pegawai BAPPEDA</h2>
+                                <p class="text-xs text-gray-500 mt-1">Kelola data PNS dan PPPK untuk keperluan notifikasi WA Agenda.</p>
+                            </div>
+                            <div class="flex gap-2 w-full sm:w-auto">
+                                <input type="text" id="pegawai-search" onkeyup="renderPegawaiTable()" placeholder="Cari nama pegawai..." class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 w-full sm:w-48">
+                                <button onclick="openPegawaiModal()" class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold px-4 py-2 rounded-lg shadow transition flex items-center whitespace-nowrap">
+                                    <i class="fas fa-user-plus sm:mr-2"></i> <span class="hidden sm:inline">Tambah Pegawai</span><span class="sm:hidden">Tambah</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto w-full">
+                            <table class="w-full text-left border-collapse min-w-[600px]">
+                                <thead>
+                                    <tr class="bg-white border-b border-gray-200 text-xs uppercase text-gray-500 font-semibold tracking-wider">
+                                        <th class="p-4">Nama Lengkap & Jabatan</th>
+                                        <th class="p-4 w-32 text-center">Status</th>
+                                        <th class="p-4 w-48">No. WhatsApp</th>
+                                        <th class="p-4 text-right w-32">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm" id="pegawai-table">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- CONTENT 2: MANAJEMEN AGENDA -->
                 <div id="content-menu-agenda" class="menu-content hidden">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
                         <div class="p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50">
                             <div>
                                 <h2 class="text-lg font-bold text-gray-800">Daftar Seluruh Agenda</h2>
-                                <p class="text-xs text-gray-500 mt-1">Mengelola jadwal & PIC untuk notifikasi WhatsApp</p>
+                                <p class="text-xs text-gray-500 mt-1">Mengelola jadwal & peserta (PNS/PPPK) untuk notifikasi WhatsApp</p>
                             </div>
                             <div class="flex gap-2 w-full sm:w-auto">
                                 <button onclick="fetchDataFromServer()" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm px-3 py-2 rounded-lg transition flex items-center" title="Refresh Data">
@@ -423,7 +461,7 @@
                                         <th class="p-4 w-40">Tanggal & Waktu</th>
                                         <th class="p-4 w-64">Nama Kegiatan</th>
                                         <th class="p-4 w-48">Lokasi & Bidang</th>
-                                        <th class="p-4 w-56">PIC & Status WA</th>
+                                        <th class="p-4 w-56">Peserta & Status WA</th>
                                         <th class="p-4 text-center w-32">Status Agenda</th>
                                         <th class="p-4 text-right w-32">Aksi</th>
                                     </tr>
@@ -502,6 +540,47 @@
         </div>
     </div>
 
+    <!-- MODALS -->
+
+    <!-- MODAL TAMBAH PEGAWAI -->
+    <div id="pegawai-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal('pegawai-modal')"></div>
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-auto z-10 max-h-[90vh] flex flex-col relative" id="pegawai-modal-content">
+            <div class="flex justify-between items-center p-5 sm:p-6 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800" id="pegawai-modal-title">Tambah Pegawai</h3>
+                <button onclick="closeModal('pegawai-modal')" class="text-gray-400 hover:text-red-500 transition p-1"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="p-5 sm:p-6 overflow-y-auto">
+                <form id="pegawai-form" onsubmit="savePegawai(event)">
+                    <input type="hidden" id="pegawai-id">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Nama Lengkap (Beserta Gelar/Jabatan) *</label>
+                        <input type="text" id="pegawai-name" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition" placeholder="Contoh: Bpk. Budi Santoso, ST">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Status Kepegawaian *</label>
+                        <select id="pegawai-status" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition bg-white">
+                            <option value="PNS">PNS</option>
+                            <option value="PPPK">PPPK</option>
+                            <option value="Honorer">Tenaga Honorer / Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">No. WhatsApp Aktif *</label>
+                        <input type="text" id="pegawai-phone" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 transition" placeholder="Contoh: 081234567890">
+                        <p class="text-[10px] text-gray-500 mt-1">Gunakan awalan 08 atau +62. Pastikan nomor benar agar notifikasi tersampaikan.</p>
+                    </div>
+                    <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                        <button type="button" onclick="closeModal('pegawai-modal')" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-lg transition text-sm">Batal</button>
+                        <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg shadow transition text-sm flex items-center">
+                            <i class="fas fa-save mr-2"></i> Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL FORM TAMBAH/EDIT AGENDA -->
     <div id="agenda-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal('agenda-modal')"></div>
@@ -550,21 +629,28 @@
                         </div>
                     </div>
 
-                    <!-- PENGATURAN PIC & WHATSAPP -->
+                    <!-- PENGATURAN PESERTA (BARU) -->
                     <div class="mt-4 pt-4 border-t border-gray-100">
-                        <div class="flex items-center text-green-600 mb-3">
-                            <i class="fab fa-whatsapp text-lg mr-2"></i>
-                            <h4 class="font-bold text-sm uppercase tracking-wide">Pengaturan Pengingat PIC</h4>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-gray-700 text-sm font-bold mb-2">Nama Penanggung Jawab *</label>
-                                <input type="text" id="agenda-pic-name" required placeholder="Contoh: Bpk. Budi Santoso" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center text-green-600">
+                                <i class="fab fa-whatsapp text-lg mr-2"></i>
+                                <h4 class="font-bold text-sm uppercase tracking-wide">Pilih Peserta (Blast WA)</h4>
                             </div>
-                            <div>
-                                <label class="block text-gray-700 text-sm font-bold mb-2">No. WhatsApp PIC *</label>
-                                <input type="text" id="agenda-pic-phone" required placeholder="Contoh: 081234567890" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
-                                <p class="text-[10px] text-gray-500 mt-1">Gunakan awalan 08 atau +62</p>
+                        </div>
+                        
+                        <div class="flex gap-2 mb-3">
+                            <select id="agenda-select-pegawai" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 bg-white">
+                                <!-- Populated by JS -->
+                            </select>
+                            <button type="button" onclick="addAttendeeToAgenda()" class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-bold transition">
+                                <i class="fas fa-plus"></i> Tambah
+                            </button>
+                        </div>
+
+                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 min-h-[80px]">
+                            <p class="text-[11px] text-gray-500 mb-2 border-b border-gray-200 pb-1">Daftar Pegawai yang akan menerima notifikasi H-1 & 2 Jam:</p>
+                            <div id="attendees-list-container" class="flex flex-wrap gap-2">
+                                <!-- Tags will appear here -->
                             </div>
                         </div>
                     </div>
@@ -714,9 +800,11 @@
         // STATE MANAJEMEN
         let dbAgendas = [];
         let dbUsers = [];
+        let dbPegawai = []; // STATE BARU UNTUK DATA PEGAWAI
         let currentUser = null;
         let reminderInterval = null;
         let publicSyncInterval = null;
+        let currentAgendaAttendees = []; // State sementara form agenda
 
         // ==========================================
         // SIMULASI DATABASE GOOGLE SHEETS (FALLBACK)
@@ -724,11 +812,20 @@
         function simulateGoogleSheetsData() {
             let lsAgendas = localStorage.getItem('gsheets_sim_agendas');
             let lsUsers = localStorage.getItem('gsheets_sim_users');
+            let lsPegawai = localStorage.getItem('gsheets_sim_pegawai');
             
+            if(!lsPegawai) {
+                lsPegawai = JSON.stringify([
+                    { id: 1, name: 'Bpk. Budi Santoso, ST', type: 'PNS', phone: '081200000001' },
+                    { id: 2, name: 'Ahmad Fajri', type: 'PPPK', phone: '081200000003' }
+                ]);
+                localStorage.setItem('gsheets_sim_pegawai', lsPegawai);
+            }
+
             if(!lsAgendas) {
                 lsAgendas = JSON.stringify([
-                    { id: 1, date: '2026-03-15', time: '09:00', title: 'Musrenbang RKPD', location: 'Aula Sindang', bidang: 'Perencanaan', status: 'Dikonfirmasi', pic_name: 'Bpk. Ahmad', pic_phone: '081200000001', status_h1: false, status_h2: false, notulensi_text: '', notulensi_link: '' },
-                    { id: 2, date: '2026-03-01', time: '10:00', title: 'Rapat Evaluasi Anggaran', location: 'Ruang Rapat Utama', bidang: 'Sekretariat', status: 'Selesai', pic_name: 'Ibu Dina', pic_phone: '081200000002', status_h1: true, status_h2: true, notulensi_text: 'Rapat berjalan lancar, seluruh anggaran telah direvisi.', notulensi_link: 'https://drive.google.com' }
+                    { id: 1, date: '2026-03-15', time: '09:00', title: 'Musrenbang RKPD', location: 'Aula Sindang', bidang: 'Perencanaan', status: 'Dikonfirmasi', pic_name: 'Bpk. Ahmad', pic_phone: '081200000001', attendees: [{id: 1, name: 'Bpk. Budi Santoso, ST', phone: '081200000001'}], status_h1: false, status_h2: false, notulensi_text: '', notulensi_link: '' },
+                    { id: 2, date: '2026-03-01', time: '10:00', title: 'Rapat Evaluasi Anggaran', location: 'Ruang Rapat Utama', bidang: 'Sekretariat', status: 'Selesai', pic_name: 'Ibu Dina', pic_phone: '081200000002', attendees: [{id: 2, name: 'Ibu Dina', phone: '081200000002'}], status_h1: true, status_h2: true, notulensi_text: 'Rapat berjalan lancar.', notulensi_link: 'https://drive.google.com' }
                 ]);
                 localStorage.setItem('gsheets_sim_agendas', lsAgendas);
             }
@@ -739,7 +836,7 @@
                 ]);
                 localStorage.setItem('gsheets_sim_users', lsUsers);
             }
-            return { agendas: JSON.parse(lsAgendas), users: JSON.parse(lsUsers) };
+            return { agendas: JSON.parse(lsAgendas), users: JSON.parse(lsUsers), pegawai: JSON.parse(lsPegawai) };
         }
 
         // FUNGSI UTAMA PENGAMBILAN DATA (API/SIMULASI)
@@ -750,6 +847,21 @@
                     let json = await response.json();
                     dbAgendas = json.agendas || [];
                     dbUsers = json.users || [];
+                    
+                    // Fallback jika API belum menyediakan Data Pegawai, load secara hybrid dari localStorage
+                    dbPegawai = json.pegawai || JSON.parse(localStorage.getItem('gsheets_sim_pegawai') || '[]');
+
+                    // Backward Compatibility: Jika agenda belum punya format "attendees", konversi dari "pic_name"
+                    dbAgendas.forEach(ag => {
+                        if(!ag.attendees) {
+                            if(ag.pic_name && ag.pic_phone) {
+                                ag.attendees = [{ id: Date.now() + Math.random(), name: ag.pic_name, phone: ag.pic_phone }];
+                            } else {
+                                ag.attendees = [];
+                            }
+                        }
+                    });
+
                 } catch(e) {
                     console.error("Gagal terhubung ke Google Sheets:", e);
                     Swal.fire('Database Error', 'Gagal memuat data dari Google Sheets.', 'error');
@@ -759,6 +871,7 @@
                 let simData = simulateGoogleSheetsData();
                 dbAgendas = simData.agendas;
                 dbUsers = simData.users;
+                dbPegawai = simData.pegawai;
             }
         }
 
@@ -776,6 +889,14 @@
                 else dbUsers.push(payload);
             } else if(action === 'deleteUser') {
                 dbUsers = dbUsers.filter(u => u.id !== payload.id);
+            } else if(action === 'savePegawai') {
+                let idx = dbPegawai.findIndex(p => p.id === payload.id);
+                if(idx >= 0) dbPegawai[idx] = payload;
+                else dbPegawai.push(payload);
+                localStorage.setItem('gsheets_sim_pegawai', JSON.stringify(dbPegawai));
+            } else if(action === 'deletePegawai') {
+                dbPegawai = dbPegawai.filter(p => p.id !== payload.id);
+                localStorage.setItem('gsheets_sim_pegawai', JSON.stringify(dbPegawai));
             }
 
             if (GAS_URL) {
@@ -809,6 +930,7 @@
             if(currentUser) {
                 renderAdminAgendas();
                 renderUsersTable();
+                renderPegawaiTable();
                 renderNotulensiTable();
                 updateDashboardStats();
             }
@@ -888,6 +1010,130 @@
         }
 
         // ==========================================
+        // FITUR BARU: CRUD PEGAWAI (MULTI-PESERTA)
+        // ==========================================
+        function renderPegawaiTable() {
+            const tbody = document.getElementById('pegawai-table');
+            if(!tbody) return;
+            const search = document.getElementById('pegawai-search').value.toLowerCase();
+            let filtered = dbPegawai.filter(p => p.name.toLowerCase().includes(search));
+            
+            tbody.innerHTML = '';
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-500">Belum ada data pegawai.</td></tr>`; 
+                return;
+            }
+
+            filtered.forEach(p => {
+                // Gunakan p.type dari GS, atau fallback ke p.status jika ada data lama
+                const empType = p.type || p.status || '-'; 
+                const bgStatus = empType === 'PNS' ? 'bg-blue-100 text-blue-700' : (empType === 'PPPK' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-700');
+                
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                        <td class="p-4 font-medium text-gray-800"><i class="fas fa-user text-gray-400 mr-2"></i> ${p.name}</td>
+                        <td class="p-4 text-center"><span class="${bgStatus} px-3 py-1 rounded-full text-xs font-bold">${empType}</span></td>
+                        <td class="p-4 text-gray-600"><i class="fab fa-whatsapp text-green-500 mr-1"></i> ${p.phone}</td>
+                        <td class="p-4 text-right">
+                            <button onclick="editPegawai(${p.id})" class="text-brand-500 hover:bg-brand-50 p-2 rounded transition"><i class="fas fa-edit"></i></button>
+                            <button onclick="deletePegawai(${p.id})" class="text-red-500 hover:bg-red-50 p-2 rounded transition"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        function openPegawaiModal(id = null) {
+            const modal = document.getElementById('pegawai-modal');
+            const content = document.getElementById('pegawai-modal-content');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            content.classList.remove('modal-leave'); content.classList.add('modal-enter');
+
+            if(id) {
+                document.getElementById('pegawai-modal-title').innerText = "Edit Pegawai";
+                const p = dbPegawai.find(x => x.id === id);
+                document.getElementById('pegawai-id').value = p.id;
+                document.getElementById('pegawai-name').value = p.name;
+                document.getElementById('pegawai-status').value = p.type || p.status || 'PNS';
+                document.getElementById('pegawai-phone').value = p.phone;
+            } else {
+                document.getElementById('pegawai-modal-title').innerText = "Tambah Pegawai";
+                document.getElementById('pegawai-form').reset();
+                document.getElementById('pegawai-id').value = '';
+            }
+        }
+        
+        function editPegawai(id) { openPegawaiModal(id); }
+
+        async function savePegawai(e) {
+            e.preventDefault();
+            const idVal = document.getElementById('pegawai-id').value;
+            const payload = {
+                id: idVal ? parseInt(idVal) : Date.now(),
+                name: document.getElementById('pegawai-name').value,
+                type: document.getElementById('pegawai-status').value, // Properti diubah menjadi 'type' sesuai kolom di Google Sheet
+                phone: document.getElementById('pegawai-phone').value
+            };
+            Swal.fire({ title: 'Menyimpan...', didOpen: () => Swal.showLoading() });
+            await saveToDatabase('savePegawai', payload);
+            Swal.fire({ icon: 'success', title: 'Tersimpan', timer: 1000, showConfirmButton: false });
+            closeModal('pegawai-modal'); renderPegawaiTable(); updateDashboardStats();
+        }
+
+        function deletePegawai(id) {
+            Swal.fire({ title: 'Hapus Pegawai?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#e53e3e', confirmButtonText: 'Ya, Hapus' })
+            .then(async (result) => {
+                if (result.isConfirmed) {
+                    await saveToDatabase('deletePegawai', {id: id});
+                    Swal.fire('Terhapus!', '', 'success'); renderPegawaiTable(); updateDashboardStats();
+                }
+            });
+        }
+
+        // --- Logika Seleksi Multi-Peserta di Modal Agenda ---
+        function populatePegawaiDropdown() {
+            const select = document.getElementById('agenda-select-pegawai');
+            select.innerHTML = '<option value="">-- Pilih dari Daftar Pegawai --</option>';
+            dbPegawai.forEach(p => {
+                const empType = p.type || p.status || '-';
+                select.innerHTML += `<option value="${p.id}">${p.name} (${empType})</option>`;
+            });
+        }
+
+        function renderAttendeesList() {
+            const container = document.getElementById('attendees-list-container');
+            container.innerHTML = '';
+            if(currentAgendaAttendees.length === 0) {
+                container.innerHTML = '<span class="text-xs text-gray-400 italic">Belum ada peserta yang ditambahkan.</span>'; return;
+            }
+            currentAgendaAttendees.forEach((att, idx) => {
+                container.innerHTML += `
+                    <div class="inline-flex items-center bg-white border border-brand-200 text-brand-800 text-xs px-2 py-1 rounded shadow-sm">
+                        <i class="fas fa-user-circle mr-1.5 text-brand-500"></i> ${att.name}
+                        <button type="button" onclick="removeAttendeeFromAgenda(${idx})" class="ml-2 text-red-500 hover:text-red-700 focus:outline-none"><i class="fas fa-times"></i></button>
+                    </div>`;
+            });
+        }
+
+        function addAttendeeToAgenda() {
+            const select = document.getElementById('agenda-select-pegawai');
+            const pId = parseInt(select.value);
+            if(!pId) return;
+            
+            const p = dbPegawai.find(x => x.id === pId);
+            if(p && !currentAgendaAttendees.find(a => a.id === pId)) {
+                currentAgendaAttendees.push({ id: p.id, name: p.name, phone: p.phone });
+                renderAttendeesList();
+            }
+            select.value = ''; // Reset select form
+        }
+
+        function removeAttendeeFromAgenda(index) {
+            currentAgendaAttendees.splice(index, 1);
+            renderAttendeesList();
+        }
+
+
+        // ==========================================
         // MANAJEMEN PENGGUNA (CRUD)
         // ==========================================
         function renderUsersTable() {
@@ -942,7 +1188,7 @@
         }
 
         // ==========================================
-        // API & BOT WHATSAPP LOGIC
+        // API & BOT WHATSAPP LOGIC (DIPERBARUI)
         // ==========================================
         function formatPhone(phone) {
             if(!phone) return "";
@@ -988,7 +1234,7 @@
 
             for (let i = 0; i < dbAgendas.length; i++) {
                 let ag = dbAgendas[i];
-                if (ag.status === 'Selesai' || ag.status === 'Ditunda' || !ag.pic_phone) continue;
+                if (ag.status === 'Selesai' || ag.status === 'Ditunda' || !ag.attendees || ag.attendees.length === 0) continue;
 
                 const agendaDateTime = new Date(`${getRawDate(ag.date)}T${formatTime(ag.time)}`);
                 const diffMs = agendaDateTime - now;
@@ -998,22 +1244,24 @@
 
                 // H-1 Check
                 if (diffHours <= 24 && diffHours > 2 && !ag.status_h1) {
-                    const msg = `*PENGINGAT (H-1) AGENDA BAPPEDA*\n\nHalo *${ag.pic_name}*,\nMengingatkan bahwa agenda *"${ag.title}"* akan dilaksanakan BESOK pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${formatTime(ag.time)} WIB\n📍 Lokasi: ${ag.location}\n🏢 Bidang: ${ag.bidang}\n\nMohon pastikan persiapan selesai. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
-                    if(await sendWhatsApp(ag.pic_phone, msg, "Otomatis H-1")) {
-                        dbAgendas[i].status_h1 = true;
-                        needsDbUpdate = true;
-                        await saveToDatabase('saveAgenda', dbAgendas[i]); 
+                    for(let att of ag.attendees) {
+                        const msg = `*PENGINGAT (H-1) AGENDA BAPPEDA*\n\nHalo *${att.name}*,\nMengingatkan Anda tercatat sebagai peserta/PIC pada agenda *"${ag.title}"* yang akan dilaksanakan BESOK pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${formatTime(ag.time)} WIB\n📍 Lokasi: ${ag.location}\n🏢 Bidang: ${ag.bidang}\n\nMohon pastikan persiapan/kehadiran Anda. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
+                        await sendWhatsApp(att.phone, msg, "Otomatis H-1");
                     }
+                    dbAgendas[i].status_h1 = true;
+                    needsDbUpdate = true;
+                    await saveToDatabase('saveAgenda', dbAgendas[i]); 
                 }
 
                 // H-2 Jam Check
                 if (diffHours <= 2 && diffHours > 0 && !ag.status_h2) {
-                    const msg = `*PENGINGAT MENDESAK (2 JAM) BAPPEDA*\n\nHalo *${ag.pic_name}*,\nAgenda *"${ag.title}"* akan dimulai DALAM WAKTU DEKAT pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${formatTime(ag.time)} WIB\n📍 Lokasi: ${ag.location}\n\nMohon standby. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
-                    if(await sendWhatsApp(ag.pic_phone, msg, "Otomatis 2 Jam")) {
-                        dbAgendas[i].status_h2 = true;
-                        needsDbUpdate = true;
-                        await saveToDatabase('saveAgenda', dbAgendas[i]);
+                    for(let att of ag.attendees) {
+                        const msg = `*PENGINGAT MENDESAK (2 JAM) BAPPEDA*\n\nHalo *${att.name}*,\nAgenda *"${ag.title}"* akan dimulai DALAM WAKTU DEKAT pada:\n\n📅 Tgl: ${formatDate(ag.date)}\n⏰ Waktu: ${formatTime(ag.time)} WIB\n📍 Lokasi: ${ag.location}\n\nMohon standby. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
+                        await sendWhatsApp(att.phone, msg, "Otomatis 2 Jam");
                     }
+                    dbAgendas[i].status_h2 = true;
+                    needsDbUpdate = true;
+                    await saveToDatabase('saveAgenda', dbAgendas[i]);
                 }
             }
 
@@ -1024,16 +1272,19 @@
 
         async function testManualWA(id) {
             const ag = dbAgendas.find(a => a.id === id);
-            if(!ag || !ag.pic_phone) return Swal.fire('Error', 'Nomor WA tidak tersedia', 'error');
+            if(!ag || !ag.attendees || ag.attendees.length === 0) return Swal.fire('Error', 'Tidak ada data peserta/pegawai yang di-assign pada agenda ini.', 'error');
 
-            Swal.fire({ title: 'Mengirim Pesan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
-            const msg = `*INFORMASI AGENDA BAPPEDA*\n\nHalo *${ag.pic_name}*,\nBerikut adalah detail kegiatan yang ditugaskan kepada Anda:\n\n📌 *Agenda*: ${ag.title}\n📅 *Tgl*: ${formatDate(ag.date)}\n⏰ *Waktu*: ${formatTime(ag.time)} WIB\n📍 *Lokasi*: ${ag.location}\n🏢 *Bidang*: ${ag.bidang}\n\nMohon dipersiapkan dengan baik. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
+            Swal.fire({ title: `Mengirim Pesan ke ${ag.attendees.length} Orang...`, allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
             
-            if(await sendWhatsApp(ag.pic_phone, msg, "Kirim Manual")) {
-                Swal.fire('Berhasil!', `Informasi agenda terkirim ke ${ag.pic_phone}`, 'success');
-            } else {
-                Swal.fire('Gagal!', 'Terjadi kesalahan jaringan atau API Key WA tidak valid.', 'error');
+            let sentCount = 0;
+            for(let att of ag.attendees) {
+                const msg = `*INFORMASI AGENDA BAPPEDA*\n\nHalo *${att.name}*,\nBerikut adalah detail kegiatan yang ditugaskan kepada Anda:\n\n📌 *Agenda*: ${ag.title}\n📅 *Tgl*: ${formatDate(ag.date)}\n⏰ *Waktu*: ${formatTime(ag.time)} WIB\n📍 *Lokasi*: ${ag.location}\n🏢 *Bidang*: ${ag.bidang}\n\nMohon dipersiapkan dengan baik. Terima kasih.\n\n_Sistem Informasi SIAP BAPPEDA_`;
+                if(await sendWhatsApp(att.phone, msg, "Kirim Manual")) {
+                    sentCount++;
+                }
             }
+
+            Swal.fire('Berhasil!', `Informasi agenda berhasil terkirim ke ${sentCount} dari ${ag.attendees.length} peserta.`, 'success');
         }
 
         // ==========================================
@@ -1080,6 +1331,7 @@
 
             if (menuId === 'menu-dashboard') updateDashboardStats();
             if (menuId === 'menu-agenda') renderAdminAgendas();
+            if (menuId === 'menu-pegawai') renderPegawaiTable();
             if (menuId === 'menu-users') renderUsersTable();
             if (menuId === 'menu-notulensi') renderNotulensiTable();
 
@@ -1195,6 +1447,14 @@
                 const s = getStatusConfig(ag.status);
                 const badgeH1 = ag.status_h1 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400';
                 const badgeH2 = ag.status_h2 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400';
+                
+                const attCount = ag.attendees ? ag.attendees.length : 0;
+                let namesPreview = '';
+                if(attCount > 0) {
+                    namesPreview = `<div class="text-[10px] text-gray-500 mt-1 line-clamp-2 leading-tight">${ag.attendees.map(x => x.name).join(', ')}</div>`;
+                } else {
+                    namesPreview = `<div class="text-[10px] text-red-500 mt-1 italic">Belum ada peserta diatur</div>`;
+                }
 
                 const canEdit = currentUser.role === 'superadmin' || currentUser.role === ag.bidang || currentUser.role === 'Semua Bidang';
                 const actionBtns = canEdit ? `
@@ -1214,9 +1474,9 @@
                             <div class="flex items-center mt-1 text-gray-400"><i class="fas fa-tag mr-2 w-3"></i> ${ag.bidang}</div>
                         </td>
                         <td class="p-4">
-                            <div class="font-semibold text-gray-800 text-xs mb-1"><i class="fas fa-user text-gray-400 mr-1"></i> ${ag.pic_name || 'Belum diatur'}</div>
-                            <div class="text-xs text-green-600 mb-2"><i class="fab fa-whatsapp mr-1"></i> ${ag.pic_phone ? formatPhone(ag.pic_phone) : '-'}</div>
-                            <div class="flex flex-wrap gap-1">
+                            <div class="font-semibold text-gray-800 text-xs bg-gray-100 inline-block px-2 py-1 rounded"><i class="fas fa-users text-brand-500 mr-1"></i> ${attCount} Peserta</div>
+                            ${namesPreview}
+                            <div class="flex flex-wrap gap-1 mt-2">
                                 <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${badgeH1}">H-1: ${ag.status_h1 ? 'TERKIRIM' : 'MENUNGGU'}</span>
                                 <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${badgeH2}">2J: ${ag.status_h2 ? 'TERKIRIM' : 'MENUNGGU'}</span>
                             </div>
@@ -1225,7 +1485,7 @@
                             <span class="${s.bg} ${s.text} text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full border border-white shadow-sm whitespace-nowrap">${ag.status}</span>
                         </td>
                         <td class="p-4 text-right whitespace-nowrap">
-                            <button onclick="testManualWA(${ag.id})" class="text-green-500 hover:bg-green-50 p-2 rounded transition" title="Kirim Info ke PIC"><i class="fab fa-whatsapp"></i></button>
+                            <button onclick="testManualWA(${ag.id})" class="text-green-500 hover:bg-green-50 p-2 rounded transition" title="Kirim Info ke Semua Peserta"><i class="fab fa-whatsapp"></i></button>
                             ${actionBtns}
                         </td>
                     </tr>
@@ -1412,6 +1672,8 @@
 
             const bidangSelect = document.getElementById('agenda-bidang');
             const lockMsg = document.getElementById('agenda-bidang-lock-msg');
+            
+            populatePegawaiDropdown();
 
             if (id) {
                 document.getElementById('modal-title').innerText = "Edit Agenda";
@@ -1428,12 +1690,15 @@
                 lockMsg.classList.add('hidden');
                 
                 document.getElementById('agenda-status').value = ag.status;
-                document.getElementById('agenda-pic-name').value = ag.pic_name || '';
-                document.getElementById('agenda-pic-phone').value = ag.pic_phone || '';
+                
+                // Load attendees ke state sementara
+                currentAgendaAttendees = ag.attendees ? JSON.parse(JSON.stringify(ag.attendees)) : [];
             } else {
                 document.getElementById('modal-title').innerText = "Tambah Agenda Baru";
                 document.getElementById('agenda-form').reset();
                 document.getElementById('agenda-id').value = '';
+                
+                currentAgendaAttendees = [];
                 
                 // Batasan dan penguncian kolom bidang saat membuat agenda baru
                 if(currentUser && currentUser.role !== 'superadmin') {
@@ -1448,6 +1713,7 @@
                     lockMsg.classList.add('hidden');
                 }
             }
+            renderAttendeesList();
         }
 
         function openUserModal() {
@@ -1461,7 +1727,7 @@
 
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
-            const content = document.getElementById(modalId === 'agenda-modal' ? 'modal-content' : (modalId === 'notulensi-modal' ? 'notulensi-modal-content' : 'user-modal-content'));
+            const content = document.getElementById(modalId === 'agenda-modal' ? 'modal-content' : (modalId === 'notulensi-modal' ? 'notulensi-modal-content' : (modalId === 'pegawai-modal' ? 'pegawai-modal-content' : 'user-modal-content')));
             content.classList.remove('modal-enter'); content.classList.add('modal-leave');
             setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
         }
@@ -1471,6 +1737,11 @@
             const idVal = document.getElementById('agenda-id').value;
             let existingAgenda = idVal ? dbAgendas.find(a => a.id === parseInt(idVal)) : {};
             
+            if(currentAgendaAttendees.length === 0) {
+                Swal.fire('Peringatan', 'Mohon tambahkan minimal 1 peserta/pegawai untuk menerima notifikasi pengingat.', 'warning');
+                return;
+            }
+
             // Ambil value bidang, bypass disabled state
             const bidangSelect = document.getElementById('agenda-bidang');
             const bidangValue = bidangSelect.disabled ? currentUser.role : bidangSelect.value;
@@ -1483,10 +1754,14 @@
                 location: document.getElementById('agenda-location').value,
                 bidang: bidangValue,
                 status: document.getElementById('agenda-status').value,
-                pic_name: document.getElementById('agenda-pic-name').value,
-                pic_phone: document.getElementById('agenda-pic-phone').value,
-                status_h1: false, 
-                status_h2: false,
+                attendees: currentAgendaAttendees, // Menyimpan array of objects peserta
+                
+                // Tetap mengirim pic_name & pic_phone (diambil dari peserta pertama) sebagai fallback jika GS script lama membutuhkannya
+                pic_name: currentAgendaAttendees.length > 0 ? currentAgendaAttendees[0].name : '', 
+                pic_phone: currentAgendaAttendees.length > 0 ? currentAgendaAttendees[0].phone : '', 
+                
+                status_h1: existingAgenda.status_h1 || false, 
+                status_h2: existingAgenda.status_h2 || false,
                 notulensi_text: existingAgenda.notulensi_text || '', 
                 notulensi_link: existingAgenda.notulensi_link || ''
             };
@@ -1537,10 +1812,22 @@
             const mendatang = viewableAgendas.filter(a => a.status === 'Dikonfirmasi' || a.status === 'Persiapan').length;
             const batal = viewableAgendas.filter(a => a.status === 'Ditunda').length;
 
-            document.getElementById('stat-total').innerText = total;
-            document.getElementById('stat-selesai').innerText = selesai;
-            document.getElementById('stat-mendatang').innerText = mendatang;
-            document.getElementById('stat-batal').innerText = batal;
+            // Mencegah error null dengan memastikan elemen HTML-nya ada
+            const elTotal = document.getElementById('stat-total');
+            if (elTotal) elTotal.innerText = total;
+
+            const elSelesai = document.getElementById('stat-selesai');
+            if (elSelesai) elSelesai.innerText = selesai;
+
+            const elMendatang = document.getElementById('stat-mendatang');
+            if (elMendatang) elMendatang.innerText = mendatang;
+
+            const elBatal = document.getElementById('stat-batal');
+            if (elBatal) elBatal.innerText = batal;
+            
+            // Total Pegawai terdaftar di DB
+            const elPegawai = document.getElementById('stat-pegawai');
+            if (elPegawai) elPegawai.innerText = dbPegawai.length;
 
             const ctxDElement = document.getElementById('donutChart');
             const ctxBElement = document.getElementById('barChart');
