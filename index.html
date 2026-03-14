@@ -296,9 +296,9 @@
                 <div class="bg-gray-50 rounded-lg p-3 mb-3 text-xs border border-gray-100">
                     <div class="flex items-center gap-2 font-semibold text-gray-700 mb-1">
                         <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse" id="wa-bot-indicator"></div>
-                        WA Pengingat Aktif
+                        WA Bot Aktif
                     </div>
-                    <span class="text-gray-500">Mengecek jadwal otomatis setiap menit.</span>
+                    <span class="text-gray-500">WA Bot Aktif & Sinkronisasi Real-time berjalan.</span>
                 </div>
 
                 <button onclick="handleLogout()" class="flex items-center w-full px-4 py-2 text-sm text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition">
@@ -871,6 +871,7 @@
         let currentUser = null;
         let reminderInterval = null;
         let publicSyncInterval = null;
+        let autoSyncInterval = null; // STATE BARU UNTUK AUTO REFRESH DASHBOARD
         let currentAgendaAttendees = []; // State sementara form agenda
         let currentRekapData = []; // State sementara filter cetak rekap
 
@@ -932,7 +933,7 @@
 
                 } catch(e) {
                     console.error("Gagal terhubung ke Google Sheets:", e);
-                    Swal.fire('Database Error', 'Gagal memuat data dari Google Sheets.', 'error');
+                    // Hindari error pop-up di mode auto-refresh
                 }
             } else {
                 await new Promise(r => setTimeout(r, 500)); 
@@ -1283,16 +1284,33 @@
 
         function startReminderBot() {
             if(reminderInterval) clearInterval(reminderInterval);
+            // 1. Jalankan kembali pengecekan jadwal WA setiap 1 menit (Jalur Browser)
             reminderInterval = setInterval(checkAndSendReminders, 60000); 
+
+            // 2. Jalankan auto-refresh (sinkronisasi data real-time) setiap 1 menit tanpa loading
+            if(autoSyncInterval) clearInterval(autoSyncInterval);
+            autoSyncInterval = setInterval(() => {
+                // Fetch data tanpa memunculkan SweetAlert loading
+                fetchDataFromServer(false);
+            }, 60000);
+
             document.getElementById('wa-bot-indicator').classList.add('animate-pulse');
             document.getElementById('wa-bot-indicator').classList.replace('bg-gray-400', 'bg-green-500');
+            
+            const desc = document.querySelector('#wa-bot-indicator').parentElement.nextElementSibling;
+            if(desc) desc.innerText = "WA Bot Aktif & Sinkronisasi Real-time berjalan.";
+
             checkAndSendReminders(); 
         }
 
         function stopReminderBot() {
             if(reminderInterval) clearInterval(reminderInterval);
+            if(autoSyncInterval) clearInterval(autoSyncInterval);
             document.getElementById('wa-bot-indicator').classList.remove('animate-pulse');
             document.getElementById('wa-bot-indicator').classList.replace('bg-green-500', 'bg-gray-400');
+            
+            const desc = document.querySelector('#wa-bot-indicator').parentElement.nextElementSibling;
+            if(desc) desc.innerText = "Sistem Offline. Silakan login kembali.";
         }
 
         async function checkAndSendReminders() {
@@ -1542,7 +1560,7 @@
                             <div class="flex items-center mt-1 text-gray-400"><i class="fas fa-tag mr-2 w-3"></i> ${ag.bidang}</div>
                         </td>
                         <td class="p-4">
-                            <div class="font-semibold text-gray-800 text-xs bg-gray-100 inline-block px-2 py-1 rounded"><i class="fas fa-users text-brand-500 mr-1"></i> ${attCount} Peserta</div>
+                            <div class="fontsemibold text-gray-800 text-xs bg-gray-100 inline-block px-2 py-1 rounded"><i class="fas fa-users text-brand-500 mr-1"></i> ${attCount} Peserta</div>
                             ${namesPreview}
                             <div class="flex flex-wrap gap-1 mt-2">
                                 <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${badgeH1}">H-1: ${ag.status_h1 ? 'TERKIRIM' : 'MENUNGGU'}</span>
