@@ -289,6 +289,14 @@
                         <span class="text-sm">Rekap Laporan</span>
                     </a>
                 </nav>
+
+                <div class="px-6 mt-8 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Sistem</div>
+                <nav class="space-y-1">
+                    <a href="#" onclick="switchMenu('menu-info', this)" class="menu-btn flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <i class="fas fa-info-circle w-6 text-center mr-2"></i>
+                        <span class="text-sm">Info Aplikasi</span>
+                    </a>
+                </nav>
             </div>
             
             <div class="p-4 border-t border-gray-200">
@@ -599,6 +607,60 @@
                                     <tr><td colspan="5" class="p-8 text-center text-gray-500">Silakan pilih rentang tanggal dan klik "Tampilkan".</td></tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW CONTENT 6: INFO APLIKASI -->
+                <div id="content-menu-info" class="menu-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+                        <div class="p-5 border-b border-gray-100 bg-gray-50">
+                            <h2 class="text-lg font-bold text-gray-800">Informasi Sistem & Pengembang</h2>
+                            <p class="text-xs text-gray-500 mt-1">Detail tentang SIAP BAPPEDA dan arsitektur yang digunakan.</p>
+                        </div>
+                        <div class="p-6 md:p-8 space-y-8">
+                            <!-- App Info -->
+                            <div>
+                                <h3 class="text-md font-bold text-gray-800 mb-3 flex items-center"><i class="fas fa-desktop text-brand-500 mr-2"></i> Tentang SIAP</h3>
+                                <p class="text-sm text-gray-600 leading-relaxed text-justify">
+                                    <strong>SIAP (Sistem Informasi Agenda Pimpinan)</strong> adalah aplikasi berbasis web interaktif yang dirancang khusus untuk mempermudah pengelolaan, pemantauan, dan rekapan jadwal kegiatan pimpinan di lingkungan Badan Perencanaan Pembangunan Daerah (BAPPEDA) Kabupaten Bengkulu Tengah. Aplikasi ini bertujuan untuk meningkatkan transparansi informasi, menghindari bentrok jadwal, dan memastikan efisiensi koordinasi lintas bidang secara real-time.
+                                </p>
+                            </div>
+
+                            <!-- Tech Stack -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-gray-50 p-5 rounded-xl border border-gray-200">
+                                    <h4 class="text-sm font-bold text-gray-800 mb-2 flex items-center"><i class="fas fa-database text-green-600 mr-2"></i> Database & Backend</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed text-justify">
+                                        Sistem ini dibangun dengan arsitektur <em>Serverless</em>, memanfaatkan <strong>Google Sheets</strong> dan <strong>Google Apps Script (GAS)</strong> sebagai pusat penyimpanan data (Cloud Database) dan Backend API. Metode ini memberikan integrasi yang mulus dengan ekosistem Google Workspace.
+                                    </p>
+                                </div>
+                                <div class="bg-gray-50 p-5 rounded-xl border border-gray-200">
+                                    <h4 class="text-sm font-bold text-gray-800 mb-2 flex items-center"><i class="fab fa-whatsapp text-green-500 mr-2"></i> Bot Notifikasi WhatsApp</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed text-justify">
+                                        Dilengkapi dengan sistem peringatan dini (Reminder Bot) yang terintegrasi dengan penyedia <strong>API Sidobe</strong>. Sistem secara pintar membaca waktu acara dan mengirimkan pesan WhatsApp otomatis secara "Blast" kepada seluruh peserta/pegawai pada H-1 hari dan 2 Jam sebelum kegiatan berlangsung.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Developer Info -->
+                            <div class="border-t border-gray-200 pt-8 mt-8">
+                                <h3 class="text-md font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-code-branch text-brand-500 mr-2"></i> Pengembang Aplikasi</h3>
+                                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left bg-brand-50/50 p-5 rounded-xl border border-brand-100">
+                                    <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-brand-600 shadow-md shrink-0 border-2 border-brand-200">
+                                        <i class="fas fa-user-tie text-3xl"></i>
+                                    </div>
+                                    <div class="flex-1 mt-1">
+                                        <h4 class="text-xl font-bold text-gray-900">Damar Wulan, S.Kom</h4>
+                                        <div class="inline-block px-3 py-1 bg-brand-100 text-brand-700 text-xs font-bold rounded-full my-2">
+                                            Penata Kelola Sistem dan Teknologi Informasi
+                                        </div>
+                                        <p class="text-sm text-gray-600 mt-1">
+                                            <i class="fas fa-building mr-1.5 text-gray-400"></i> Badan Perencanaan Pembangunan Daerah (BAPPEDA) Kabupaten Bengkulu Tengah
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
